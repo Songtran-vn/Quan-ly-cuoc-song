@@ -10,21 +10,23 @@
     *, *::before, *::after { box-sizing: border-box; margin: 0; padding: 0; }
 
     :root {
-      --bg: #0D0D1A;
-      --surface: #14142B;
-      --surface2: #1C1C38;
-      --border: #2A2A50;
-      --border2: #353560;
-      --text: #E4E4F4;
-      --text2: #8888B8;
-      --text3: #4A4A80;
-      --accent: #7C6EFF;
-      --accent2: #3ECFCF;
-      --red: #FF5F7E;
-      --orange: #FFA64D;
-      --green: #3DD68C;
-      --yellow: #FFD166;
-      --font: 'Be Vietnam Pro', system-ui, sans-serif;
+      --bg:       #F2F5FF;
+      --bg2:      #E6EAFF;
+      --surface:  #FFFFFF;
+      --border:   #D4DAFF;
+      --border2:  #BBC5FF;
+      --text:     #1A1A40;
+      --text2:    #4A4A80;
+      --text3:    #8888B8;
+      --accent:   #4F46E5;
+      --accent2:  #0891B2;
+      --red:      #DC2626;
+      --orange:   #EA580C;
+      --green:    #16A34A;
+      --yellow:   #D97706;
+      --shadow:   0 2px 10px rgba(79,70,229,0.07);
+      --shadow-lg:0 8px 28px rgba(79,70,229,0.13);
+      --font:     'Be Vietnam Pro', system-ui, sans-serif;
     }
 
     body {
@@ -32,234 +34,304 @@
       background: var(--bg);
       color: var(--text);
       min-height: 100vh;
+      font-size: 15px;
     }
 
-    /* ─── Scrollbar ─── */
-    ::-webkit-scrollbar { width: 5px; }
-    ::-webkit-scrollbar-track { background: transparent; }
-    ::-webkit-scrollbar-thumb { background: var(--border); border-radius: 4px; }
+    ::-webkit-scrollbar { width: 6px; }
+    ::-webkit-scrollbar-track { background: var(--bg2); }
+    ::-webkit-scrollbar-thumb { background: var(--border2); border-radius: 4px; }
 
-    /* ─── Header ─── */
+    /* ══ HEADER ══════════════════════════════ */
     header {
       position: sticky; top: 0; z-index: 200;
-      background: rgba(13,13,26,0.88);
-      backdrop-filter: blur(18px);
+      background: rgba(255,255,255,0.94);
+      backdrop-filter: blur(16px);
       border-bottom: 1px solid var(--border);
-      padding: 14px 20px;
+      padding: 12px 20px;
+      box-shadow: 0 2px 14px rgba(79,70,229,0.07);
     }
     .header-inner {
-      max-width: 780px; margin: 0 auto;
-      display: flex; align-items: center; justify-content: space-between; gap: 12px;
+      max-width: 820px; margin: 0 auto;
+      display: flex; align-items: center; justify-content: space-between; gap: 10px; flex-wrap: wrap;
     }
     .logo { display: flex; align-items: center; gap: 10px; }
     .logo-icon {
-      width: 38px; height: 38px; border-radius: 12px;
+      width: 40px; height: 40px; border-radius: 12px;
       background: linear-gradient(135deg, var(--accent), var(--accent2));
-      display: grid; place-items: center; font-size: 18px;
-      box-shadow: 0 4px 16px rgba(124,110,255,0.35);
+      display: grid; place-items: center; font-size: 20px;
+      box-shadow: 0 4px 14px rgba(79,70,229,0.28);
+      flex-shrink: 0;
     }
-    .logo-text h1 { font-size: 18px; font-weight: 800; letter-spacing: -0.5px; }
-    .logo-text p { font-size: 11px; color: var(--text3); margin-top: 1px; }
+    .logo-text h1 { font-size: 1.1em; font-weight: 800; color: var(--accent); }
+    .logo-text p  { font-size: 0.72em; color: var(--text3); margin-top: 1px; }
+
+    .header-right { display: flex; align-items: center; gap: 8px; flex-wrap: wrap; }
+
     .urgent-badge {
-      background: rgba(255,95,126,0.12);
-      color: var(--red);
-      border: 1px solid rgba(255,95,126,0.3);
+      background: #FEF2F2; color: var(--red);
+      border: 1.5px solid #FECACA;
       border-radius: 20px; padding: 4px 12px;
-      font-size: 12px; font-weight: 700;
-      display: none;
+      font-size: 0.78em; font-weight: 700;
+      display: none; align-items: center; gap: 4px;
     }
-    .urgent-badge.show { display: inline-flex; align-items: center; gap: 5px; }
+    .urgent-badge.show { display: inline-flex; }
+
+    /* Font size controls */
+    .fs-controls {
+      display: flex; align-items: center; gap: 1px;
+      background: var(--bg2); border: 1.5px solid var(--border);
+      border-radius: 10px; padding: 3px 4px; gap: 2px;
+    }
+    .fs-btn {
+      width: 30px; height: 28px; border: none; background: transparent;
+      border-radius: 7px; cursor: pointer; font-family: var(--font);
+      font-weight: 800; color: var(--text2); font-size: 0.82em;
+      transition: background .15s, color .15s;
+      display: grid; place-items: center; line-height: 1;
+    }
+    .fs-btn:hover { background: var(--surface); color: var(--accent); }
+    .fs-label {
+      font-size: 0.75em; color: var(--text3); font-weight: 700;
+      padding: 0 3px; min-width: 26px; text-align: center;
+      border-left: 1px solid var(--border); border-right: 1px solid var(--border);
+    }
+
     .btn-add {
       background: linear-gradient(135deg, var(--accent), var(--accent2));
       color: #fff; border: none; border-radius: 12px;
-      padding: 9px 18px; font-size: 14px; font-weight: 700;
+      padding: 9px 18px; font-size: 0.88em; font-weight: 700;
       cursor: pointer; font-family: var(--font);
-      box-shadow: 0 4px 16px rgba(124,110,255,0.3);
-      transition: opacity .2s, transform .15s;
-      white-space: nowrap;
+      box-shadow: 0 4px 14px rgba(79,70,229,0.28);
+      transition: opacity .2s, transform .15s; white-space: nowrap;
     }
     .btn-add:hover { opacity: .88; transform: scale(1.03); }
 
-    /* ─── Main ─── */
-    main { max-width: 780px; margin: 0 auto; padding: 24px 16px 60px; }
+    /* ══ MAIN ════════════════════════════════ */
+    main { max-width: 820px; margin: 0 auto; padding: 22px 16px 40px; }
 
-    /* ─── Stats ─── */
-    .stats {
-      display: grid; grid-template-columns: repeat(3,1fr); gap: 12px;
-      margin-bottom: 24px;
-    }
+    /* ══ STATS ═══════════════════════════════ */
+    .stats { display: grid; grid-template-columns: repeat(3,1fr); gap: 12px; margin-bottom: 22px; }
     .stat-card {
-      background: var(--surface); border: 1px solid var(--border);
-      border-radius: 16px; padding: 16px;
-      animation: fadeUp .4s ease both;
+      background: var(--surface); border: 1.5px solid var(--border);
+      border-radius: 16px; padding: 16px 18px;
+      box-shadow: var(--shadow); animation: fadeUp .4s ease both;
     }
-    .stat-value { font-size: 28px; font-weight: 800; line-height: 1; }
-    .stat-label { font-size: 11px; color: var(--text3); margin-top: 4px; text-transform: uppercase; letter-spacing: .5px; }
+    .stat-value { font-size: 1.9em; font-weight: 800; line-height: 1; }
+    .stat-label { font-size: 0.7em; color: var(--text3); margin-top: 4px; text-transform: uppercase; letter-spacing: .5px; }
 
-    /* ─── Toolbar ─── */
-    .toolbar { display: flex; flex-wrap: wrap; gap: 8px; margin-bottom: 20px; }
+    /* ══ TOOLBAR ══════════════════════════════ */
+    .toolbar { display: flex; flex-wrap: wrap; gap: 6px; margin-bottom: 18px; align-items: center; }
     .pill {
-      border: 1px solid var(--border); border-radius: 20px;
-      padding: 5px 14px; font-size: 13px; font-weight: 500;
-      cursor: pointer; background: transparent; color: var(--text2);
-      font-family: var(--font); transition: all .2s;
+      border: 1.5px solid var(--border); border-radius: 20px;
+      padding: 5px 13px; font-size: 0.8em; font-weight: 600;
+      cursor: pointer; background: var(--surface); color: var(--text2);
+      font-family: var(--font); transition: all .18s;
+      box-shadow: 0 1px 3px rgba(0,0,0,.04);
     }
     .pill:hover { border-color: var(--accent); color: var(--accent); }
-    .pill.active { background: rgba(124,110,255,.15); border-color: var(--accent); color: var(--accent); }
-    .sort-group { display: flex; gap: 6px; margin-left: auto; }
+    .pill.active { background: var(--accent); border-color: var(--accent); color: #fff; box-shadow: 0 2px 10px rgba(79,70,229,.22); }
+    .sort-group { display: flex; gap: 5px; margin-left: auto; }
 
-    /* ─── Task list ─── */
+    /* ══ TASK CARDS ══════════════════════════ */
     #task-list { display: flex; flex-direction: column; gap: 10px; }
 
     .task-card {
       background: var(--surface);
-      border: 1px solid var(--border);
-      border-left: 4px solid #555;
+      border: 1.5px solid var(--border);
+      border-left: 5px solid #ccc;
       border-radius: 14px; padding: 14px 16px;
-      display: flex; align-items: center; gap: 14px;
+      display: flex; align-items: center; gap: 13px;
+      box-shadow: var(--shadow);
       animation: fadeUp .3s ease both;
       transition: transform .15s, box-shadow .15s;
     }
-    .task-card:hover { transform: translateY(-2px); box-shadow: 0 8px 28px rgba(0,0,0,.4); }
-    .task-card.urgent { border-color: rgba(255,95,126,.35); box-shadow: 0 0 24px rgba(255,95,126,.08); }
-    .task-card.soon { border-color: rgba(255,209,102,.3); }
+    .task-card:hover { transform: translateY(-2px); box-shadow: var(--shadow-lg); }
+    .task-card.urgent { border-color: #FECACA; background: #FFFAFA; box-shadow: 0 2px 14px rgba(220,38,38,.07); }
+    .task-card.soon   { border-color: #FDE68A; background: #FFFEF7; }
 
-    .task-icon { font-size: 26px; flex-shrink: 0; width: 38px; text-align: center; }
+    .task-icon { font-size: 1.55em; flex-shrink: 0; width: 34px; text-align: center; }
     .task-body { flex: 1; min-width: 0; }
-    .task-name-row { display: flex; align-items: center; gap: 8px; flex-wrap: wrap; margin-bottom: 6px; }
-    .task-name { font-size: 15px; font-weight: 700; }
+    .task-name-row { display: flex; align-items: center; gap: 8px; flex-wrap: wrap; margin-bottom: 5px; }
+    .task-name { font-size: 0.98em; font-weight: 700; color: var(--text); }
     .task-meta { display: flex; gap: 14px; flex-wrap: wrap; }
-    .task-meta span { font-size: 12px; color: var(--text3); }
-    .task-meta span b { color: var(--text2); font-weight: 500; }
-    .task-notes { font-size: 12px; color: var(--text3); font-style: italic; margin-top: 5px; }
-    .task-actions { display: flex; gap: 4px; flex-shrink: 0; }
+    .task-meta span { font-size: 0.76em; color: var(--text3); }
+    .task-meta span b { color: var(--text2); font-weight: 600; }
+    .task-notes { font-size: 0.76em; color: var(--text3); font-style: italic; margin-top: 4px; }
+    .task-actions { display: flex; gap: 2px; flex-shrink: 0; }
     .icon-btn {
       background: transparent; border: none; cursor: pointer;
-      font-size: 16px; padding: 7px; border-radius: 9px;
+      font-size: 0.98em; padding: 7px 8px; border-radius: 9px;
       transition: background .15s; line-height: 1;
     }
-    .icon-btn:hover { background: var(--surface2); }
+    .icon-btn:hover { background: var(--bg2); }
 
-    /* ─── Status badge ─── */
+    /* ══ BADGES ══════════════════════════════ */
     .badge {
-      display: inline-flex; align-items: center;
-      border-radius: 20px; padding: 2px 10px;
-      font-size: 11px; font-weight: 700; white-space: nowrap;
+      display: inline-flex; align-items: center; border-radius: 20px;
+      padding: 2px 9px; font-size: 0.7em; font-weight: 700; white-space: nowrap;
     }
-    .badge.red { background: rgba(255,95,126,.12); color: var(--red); border: 1px solid rgba(255,95,126,.3); }
-    .badge.orange { background: rgba(255,166,77,.12); color: var(--orange); border: 1px solid rgba(255,166,77,.3); }
-    .badge.yellow { background: rgba(255,209,102,.12); color: var(--yellow); border: 1px solid rgba(255,209,102,.3); }
-    .badge.green { background: rgba(61,214,140,.12); color: var(--green); border: 1px solid rgba(61,214,140,.3); }
+    .badge.red    { background: #FEF2F2; color: var(--red);    border: 1.5px solid #FECACA; }
+    .badge.orange { background: #FFF7ED; color: var(--orange); border: 1.5px solid #FED7AA; }
+    .badge.yellow { background: #FFFBEB; color: var(--yellow); border: 1.5px solid #FDE68A; }
+    .badge.green  { background: #F0FDF4; color: var(--green);  border: 1.5px solid #BBF7D0; }
 
-    /* ─── Empty ─── */
-    .empty {
-      text-align: center; padding: 70px 20px; color: var(--text3);
-      display: none;
-    }
+    /* ══ EMPTY ═══════════════════════════════ */
+    .empty { text-align: center; padding: 60px 20px; color: var(--text3); display: none; }
     .empty.show { display: block; }
-    .empty-icon { font-size: 52px; margin-bottom: 14px; }
-    .empty h3 { font-size: 16px; font-weight: 700; color: var(--text2); margin-bottom: 6px; }
+    .empty-icon { font-size: 3em; margin-bottom: 12px; }
+    .empty h3 { font-size: 1em; font-weight: 700; color: var(--text2); margin-bottom: 6px; }
 
-    /* ─── Presets ─── */
-    .presets-section { margin-top: 36px; border-top: 1px solid var(--border); padding-top: 22px; }
-    .section-title { font-size: 11px; font-weight: 700; color: var(--text3); text-transform: uppercase; letter-spacing: 1px; margin-bottom: 12px; }
-    .preset-grid { display: grid; grid-template-columns: repeat(auto-fill, minmax(155px,1fr)); gap: 8px; }
-    .preset-chip {
-      background: var(--surface); border: 1px solid var(--border);
-      border-radius: 12px; padding: 10px 14px;
-      cursor: pointer; text-align: left; font-family: var(--font);
-      transition: all .2s;
+    /* ══ PRESETS ═════════════════════════════ */
+    .presets-section { margin-top: 32px; border-top: 1.5px solid var(--border); padding-top: 20px; }
+    .section-header { display: flex; align-items: center; justify-content: space-between; margin-bottom: 12px; }
+    .section-title { font-size: 0.72em; font-weight: 700; color: var(--text3); text-transform: uppercase; letter-spacing: 1px; }
+    .btn-edit-presets {
+      font-size: 0.78em; font-weight: 600; color: var(--accent);
+      background: var(--bg2); border: 1.5px solid var(--border2);
+      border-radius: 8px; padding: 5px 12px; cursor: pointer;
+      font-family: var(--font); transition: all .15s;
     }
-    .preset-chip:hover { border-color: var(--accent); background: rgba(124,110,255,.08); }
-    .preset-chip .pname { font-size: 13px; font-weight: 600; color: var(--text); }
-    .preset-chip .pinfo { font-size: 11px; color: var(--text3); margin-top: 3px; }
+    .btn-edit-presets:hover { background: var(--accent); color: #fff; border-color: var(--accent); }
 
-    /* ─── Modal ─── */
+    .preset-grid { display: grid; grid-template-columns: repeat(auto-fill, minmax(148px,1fr)); gap: 8px; }
+    .preset-chip {
+      background: var(--surface); border: 1.5px solid var(--border);
+      border-radius: 12px; padding: 10px 13px;
+      cursor: pointer; text-align: left; font-family: var(--font);
+      transition: all .18s; box-shadow: 0 1px 4px rgba(0,0,0,.04);
+    }
+    .preset-chip:hover { border-color: var(--accent); background: #EEF0FF; box-shadow: 0 3px 12px rgba(79,70,229,.1); }
+    .preset-chip .pname { font-size: 0.85em; font-weight: 700; color: var(--text); }
+    .preset-chip .pinfo { font-size: 0.71em; color: var(--text3); margin-top: 3px; }
+
+    /* ══ FOOTER ══════════════════════════════ */
+    footer {
+      background: var(--surface);
+      border-top: 1.5px solid var(--border);
+      text-align: center; padding: 22px 16px;
+    }
+    .footer-inner { max-width: 820px; margin: 0 auto; }
+    .footer-name  { font-size: 0.95em; font-weight: 800; color: var(--accent); }
+    .footer-phone { font-size: 0.85em; color: var(--text2); margin-top: 4px; font-weight: 600; }
+    .footer-note  { font-size: 0.72em; color: var(--text3); margin-top: 5px; }
+
+    /* ══ OVERLAY / MODAL ═════════════════════ */
     .overlay {
-      position: fixed; inset: 0; background: rgba(0,0,0,.7);
+      position: fixed; inset: 0; background: rgba(15,15,40,.3);
       z-index: 500; display: none; align-items: center; justify-content: center;
-      padding: 16px; backdrop-filter: blur(4px);
+      padding: 16px; backdrop-filter: blur(6px);
     }
     .overlay.show { display: flex; }
     .modal {
-      background: var(--surface); border: 1px solid var(--border2);
-      border-radius: 22px; padding: 28px; width: 100%; max-width: 480px;
-      box-shadow: 0 32px 80px rgba(0,0,0,.7);
+      background: var(--surface); border: 1.5px solid var(--border2);
+      border-radius: 22px; padding: 28px; width: 100%; max-width: 500px;
+      box-shadow: 0 24px 70px rgba(79,70,229,.16);
       animation: slideUp .25s ease;
+      max-height: 90vh; overflow-y: auto;
     }
-    .modal h2 { font-size: 18px; font-weight: 800; margin-bottom: 22px; }
-    .field { display: flex; flex-direction: column; gap: 6px; margin-bottom: 16px; }
-    .field label { font-size: 12px; color: var(--text3); font-weight: 600; text-transform: uppercase; letter-spacing: .4px; }
+    .modal h2 { font-size: 1.05em; font-weight: 800; margin-bottom: 20px; }
+
+    .field { display: flex; flex-direction: column; gap: 5px; margin-bottom: 14px; }
+    .field label { font-size: 0.71em; color: var(--text3); font-weight: 700; text-transform: uppercase; letter-spacing: .4px; }
     .field input, .field select, .field textarea {
-      background: var(--bg); border: 1px solid var(--border);
+      background: var(--bg); border: 1.5px solid var(--border);
       color: var(--text); border-radius: 11px;
-      padding: 10px 14px; font-size: 14px; font-family: var(--font);
-      outline: none; transition: border-color .2s; width: 100%;
+      padding: 10px 13px; font-size: 0.9em; font-family: var(--font);
+      outline: none; transition: border-color .2s, box-shadow .2s; width: 100%;
     }
-    .field input:focus, .field select:focus, .field textarea:focus { border-color: var(--accent); }
-    .field select option { background: #1A1A30; }
-    .field textarea { resize: vertical; min-height: 60px; }
+    .field input:focus, .field select:focus, .field textarea:focus {
+      border-color: var(--accent); box-shadow: 0 0 0 3px rgba(79,70,229,.1);
+    }
+    .field textarea { resize: vertical; min-height: 56px; }
     .grid2 { display: grid; grid-template-columns: 1fr 1fr; gap: 12px; }
+
     .preview-box {
-      background: var(--bg); border: 1px solid var(--border);
-      border-radius: 11px; padding: 11px 14px;
-      font-size: 13px; color: var(--text2); margin-bottom: 16px;
-      display: none;
+      background: #EEF0FF; border: 1.5px solid var(--border2);
+      border-radius: 11px; padding: 10px 14px;
+      font-size: 0.85em; color: var(--text2); margin-bottom: 14px; display: none;
     }
     .preview-box.show { display: block; }
     .preview-box b { color: var(--accent2); }
-    .modal-footer { display: flex; gap: 10px; margin-top: 6px; }
+
+    .modal-footer { display: flex; gap: 10px; margin-top: 4px; }
     .btn-cancel {
-      flex: 1; background: transparent; border: 1px solid var(--border);
+      flex: 1; background: var(--bg2); border: 1.5px solid var(--border);
       color: var(--text2); border-radius: 11px; padding: 11px;
-      font-size: 14px; font-weight: 600; font-family: var(--font);
+      font-size: 0.9em; font-weight: 600; font-family: var(--font);
       cursor: pointer; transition: all .2s;
     }
-    .btn-cancel:hover { border-color: var(--border2); color: var(--text); }
+    .btn-cancel:hover { border-color: var(--accent); color: var(--accent); }
     .btn-save {
       flex: 2; background: linear-gradient(135deg, var(--accent), var(--accent2));
       border: none; color: #fff; border-radius: 11px; padding: 11px;
-      font-size: 14px; font-weight: 700; font-family: var(--font);
+      font-size: 0.9em; font-weight: 700; font-family: var(--font);
       cursor: pointer; transition: opacity .2s;
+      box-shadow: 0 4px 14px rgba(79,70,229,.24);
     }
     .btn-save:hover { opacity: .88; }
-    .btn-save:disabled { opacity: .4; cursor: not-allowed; }
+    .btn-save:disabled { opacity: .35; cursor: not-allowed; }
 
-    /* ─── Toast ─── */
+    /* ══ PRESET EDITOR ═══════════════════════ */
+    .preset-editor-list { display: flex; flex-direction: column; gap: 8px; margin-bottom: 10px; }
+    .preset-row {
+      display: grid; grid-template-columns: 1fr 100px 72px 34px;
+      gap: 7px; align-items: center;
+      background: var(--bg2); border-radius: 10px; padding: 8px 10px;
+    }
+    .preset-row input, .preset-row select {
+      background: #fff; border: 1.5px solid var(--border);
+      color: var(--text); border-radius: 8px;
+      padding: 6px 9px; font-size: 0.82em; font-family: var(--font);
+      outline: none; width: 100%; transition: border-color .2s;
+    }
+    .preset-row input:focus, .preset-row select:focus { border-color: var(--accent); }
+    .del-btn {
+      width: 34px; height: 34px; border: none; background: #FEE2E2;
+      color: var(--red); border-radius: 8px; cursor: pointer; font-size: 1em;
+      transition: background .15s; display: grid; place-items: center;
+    }
+    .del-btn:hover { background: var(--red); color: #fff; }
+    .btn-add-preset {
+      width: 100%; padding: 9px; background: transparent;
+      border: 1.5px dashed var(--border2); border-radius: 10px;
+      color: var(--accent); font-size: 0.85em; font-weight: 600;
+      font-family: var(--font); cursor: pointer; transition: all .15s; margin-bottom: 14px;
+    }
+    .btn-add-preset:hover { background: #EEF0FF; border-color: var(--accent); }
+
+    /* ══ TOAST ════════════════════════════════ */
     .toast {
-      position: fixed; bottom: 24px; left: 50%; transform: translateX(-50%) translateY(80px);
-      background: var(--surface2); border: 1px solid var(--border2);
-      color: var(--text); border-radius: 20px; padding: 10px 20px;
-      font-size: 13px; font-weight: 600; z-index: 999;
+      position: fixed; bottom: 24px; left: 50%;
+      transform: translateX(-50%) translateY(70px);
+      background: var(--text); color: #fff;
+      border-radius: 20px; padding: 10px 22px;
+      font-size: 0.82em; font-weight: 600; z-index: 999;
       transition: transform .3s ease, opacity .3s;
       opacity: 0; white-space: nowrap;
-      box-shadow: 0 8px 32px rgba(0,0,0,.5);
+      box-shadow: 0 8px 28px rgba(0,0,0,.16);
     }
     .toast.show { transform: translateX(-50%) translateY(0); opacity: 1; }
 
-    /* ─── Animations ─── */
     @keyframes fadeUp {
-      from { opacity: 0; transform: translateY(14px); }
+      from { opacity: 0; transform: translateY(12px); }
       to   { opacity: 1; transform: translateY(0); }
     }
     @keyframes slideUp {
-      from { opacity: 0; transform: translateY(28px); }
+      from { opacity: 0; transform: translateY(26px); }
       to   { opacity: 1; transform: translateY(0); }
     }
 
-    /* ─── Responsive ─── */
-    @media (max-width: 480px) {
-      .stats { grid-template-columns: repeat(3,1fr); }
-      .stat-value { font-size: 22px; }
-      .task-meta { gap: 8px; }
-      .modal { padding: 22px 18px; }
+    @media (max-width: 500px) {
+      .stat-value { font-size: 1.5em; }
       .grid2 { grid-template-columns: 1fr; }
+      .preset-row { grid-template-columns: 1fr 80px 34px; }
+      .preset-row .pcol-interval { display: none; }
     }
   </style>
 </head>
 <body>
 
-<!-- ─── Header ─────────────────────────────── -->
+<!-- ══ HEADER ════════════════════════════════ -->
 <header>
   <div class="header-inner">
     <div class="logo">
@@ -269,34 +341,39 @@
         <p>Quản lý công việc định kỳ</p>
       </div>
     </div>
-    <div style="display:flex;align-items:center;gap:10px">
+    <div class="header-right">
       <span class="urgent-badge" id="urgentBadge">⚡ <span id="urgentCount">0</span> cần làm</span>
+
+      <div class="fs-controls" title="Điều chỉnh cỡ chữ">
+        <button class="fs-btn" onclick="changeFS(-1)">A−</button>
+        <span class="fs-label" id="fsLabel">15</span>
+        <button class="fs-btn" onclick="changeFS(1)">A+</button>
+      </div>
+
       <button class="btn-add" onclick="openModal()">+ Thêm việc</button>
     </div>
   </div>
 </header>
 
-<!-- ─── Main ────────────────────────────────── -->
+<!-- ══ MAIN ══════════════════════════════════ -->
 <main>
-  <!-- Stats -->
   <div class="stats">
     <div class="stat-card" style="animation-delay:.05s">
       <div class="stat-value" id="statTotal" style="color:var(--accent)">0</div>
-      <div class="stat-label">Tổng việc</div>
+      <div class="stat-label">Tổng công việc</div>
     </div>
     <div class="stat-card" style="animation-delay:.1s">
       <div class="stat-value" id="statSoon" style="color:var(--yellow)">0</div>
-      <div class="stat-label">Sắp tới ≤7 ngày</div>
+      <div class="stat-label">Sắp tới ≤ 7 ngày</div>
     </div>
     <div class="stat-card" style="animation-delay:.15s">
       <div class="stat-value" id="statOverdue" style="color:var(--red)">0</div>
-      <div class="stat-label">Đã trễ</div>
+      <div class="stat-label">Đã trễ hạn</div>
     </div>
   </div>
 
-  <!-- Toolbar -->
   <div class="toolbar">
-    <button class="pill active" data-cat="all" onclick="setFilter(this,'all')">Tất cả</button>
+    <button class="pill active" data-cat="all"      onclick="setFilter(this,'all')">Tất cả</button>
     <button class="pill" data-cat="personal" onclick="setFilter(this,'personal')">✂️ Cá nhân</button>
     <button class="pill" data-cat="vehicle"  onclick="setFilter(this,'vehicle')">🚗 Xe cộ</button>
     <button class="pill" data-cat="health"   onclick="setFilter(this,'health')">💊 Sức khoẻ</button>
@@ -305,26 +382,36 @@
     <button class="pill" data-cat="other"    onclick="setFilter(this,'other')">📌 Khác</button>
     <div class="sort-group">
       <button class="pill active" id="sortDays" onclick="setSort('days')">Gần nhất</button>
-      <button class="pill" id="sortName" onclick="setSort('name')">A→Z</button>
+      <button class="pill"        id="sortName" onclick="setSort('name')">A→Z</button>
     </div>
   </div>
 
-  <!-- Task List -->
   <div id="task-list"></div>
   <div class="empty" id="emptyState">
     <div class="empty-icon">✨</div>
     <h3>Chưa có công việc nào</h3>
-    <p>Nhấn "+ Thêm việc" hoặc chọn từ danh sách mẫu bên dưới</p>
+    <p>Nhấn "+ Thêm việc" hoặc chọn nhanh từ mẫu bên dưới</p>
   </div>
 
-  <!-- Presets -->
   <div class="presets-section">
-    <div class="section-title">⚡ Thêm nhanh từ mẫu</div>
+    <div class="section-header">
+      <div class="section-title">⚡ Thêm nhanh từ mẫu</div>
+      <button class="btn-edit-presets" onclick="openPresetEditor()">✏️ Sửa mẫu</button>
+    </div>
     <div class="preset-grid" id="presetGrid"></div>
   </div>
 </main>
 
-<!-- ─── Modal ───────────────────────────────── -->
+<!-- ══ FOOTER ═════════════════════════════════ -->
+<footer>
+  <div class="footer-inner">
+    <div class="footer-name">👨‍💻 Trần Đức Sông</div>
+    <div class="footer-phone">📞 0974 168 705</div>
+    <div class="footer-note">Nhắc Việc — Ứng dụng quản lý công việc định kỳ trong cuộc sống</div>
+  </div>
+</footer>
+
+<!-- ══ MODAL: THÊM / SỬA VIỆC ════════════════ -->
 <div class="overlay" id="overlay" onclick="closeModalIfBg(event)">
   <div class="modal">
     <h2 id="modalTitle">➕ Thêm công việc mới</h2>
@@ -367,96 +454,116 @@
   </div>
 </div>
 
-<!-- ─── Toast ───────────────────────────────── -->
+<!-- ══ MODAL: SỬA MẪU ════════════════════════ -->
+<div class="overlay" id="overlayPresets" onclick="closePEIfBg(event)">
+  <div class="modal" style="max-width:560px">
+    <h2>✏️ Sửa danh sách mẫu việc</h2>
+    <p style="font-size:.82em;color:var(--text3);margin-bottom:14px">Tuỳ chỉnh tên, danh mục và chu kỳ của từng mẫu. Thay đổi sẽ được lưu lại.</p>
+    <div class="preset-editor-list" id="presetEditorList"></div>
+    <button class="btn-add-preset" onclick="addPresetRow()">+ Thêm mẫu mới</button>
+    <div class="modal-footer">
+      <button class="btn-cancel" onclick="closePresetEditor()">Huỷ</button>
+      <button class="btn-save" onclick="savePresets()">💾 Lưu mẫu việc</button>
+    </div>
+  </div>
+</div>
+
+<!-- ══ TOAST ══════════════════════════════════ -->
 <div class="toast" id="toast"></div>
 
 <script>
-// ═══════════════════════════════════════════
-//  DATA
-// ═══════════════════════════════════════════
-const STORAGE_KEY = 'nhac-viec-v2';
+const STORAGE_KEY = 'nhac-viec-v3';
+const PRESET_KEY  = 'nhac-viec-presets-v1';
+const FS_KEY      = 'nhac-viec-fs';
 
 const CATEGORIES = {
-  personal: { label: 'Cá nhân',   icon: '✂️', color: '#A78BFA' },
-  vehicle:  { label: 'Xe cộ',     icon: '🚗', color: '#34D399' },
-  health:   { label: 'Sức khoẻ',  icon: '💊', color: '#60A5FA' },
-  home:     { label: 'Nhà cửa',   icon: '🏠', color: '#FB923C' },
-  finance:  { label: 'Tài chính', icon: '💰', color: '#FBBF24' },
-  other:    { label: 'Khác',      icon: '📌', color: '#E879F9' },
+  personal: { label: 'Cá nhân',   icon: '✂️', color: '#7C3AED' },
+  vehicle:  { label: 'Xe cộ',     icon: '🚗', color: '#16A34A' },
+  health:   { label: 'Sức khoẻ',  icon: '💊', color: '#2563EB' },
+  home:     { label: 'Nhà cửa',   icon: '🏠', color: '#EA580C' },
+  finance:  { label: 'Tài chính', icon: '💰', color: '#D97706' },
+  other:    { label: 'Khác',      icon: '📌', color: '#9333EA' },
 };
 
-const PRESETS = [
-  { name: 'Cắt tóc',         cat: 'personal', interval: 30  },
-  { name: 'Thay dầu xe',     cat: 'vehicle',  interval: 90  },
-  { name: 'Bơm lốp xe',      cat: 'vehicle',  interval: 30  },
-  { name: 'Đăng kiểm xe',    cat: 'vehicle',  interval: 365 },
-  { name: 'Khám sức khoẻ',   cat: 'health',   interval: 180 },
-  { name: 'Uống vitamin',    cat: 'health',   interval: 30  },
-  { name: 'Vệ sinh máy lạnh',cat: 'home',     interval: 180 },
-  { name: 'Thay lọc nước',   cat: 'home',     interval: 180 },
-  { name: 'Nộp thuế',        cat: 'finance',  interval: 365 },
-  { name: 'Gia hạn bảo hiểm',cat: 'finance',  interval: 365 },
+const DEFAULT_PRESETS = [
+  { name: 'Cắt tóc',           cat: 'personal', interval: 30  },
+  { name: 'Thay dầu xe',       cat: 'vehicle',  interval: 90  },
+  { name: 'Bơm lốp xe',        cat: 'vehicle',  interval: 30  },
+  { name: 'Đăng kiểm xe',      cat: 'vehicle',  interval: 365 },
+  { name: 'Khám sức khoẻ',     cat: 'health',   interval: 180 },
+  { name: 'Uống vitamin',      cat: 'health',   interval: 30  },
+  { name: 'Vệ sinh máy lạnh',  cat: 'home',     interval: 180 },
+  { name: 'Thay lọc nước',     cat: 'home',     interval: 180 },
+  { name: 'Nộp thuế',          cat: 'finance',  interval: 365 },
+  { name: 'Gia hạn bảo hiểm',  cat: 'finance',  interval: 365 },
 ];
 
-let tasks = [];
-let editId = null;
+let tasks    = [];
+let presets  = [];
+let editId   = null;
 let filterCat = 'all';
-let sortMode = 'days';
+let sortMode  = 'days';
+let fontSize  = 15;
 
+// ── Load / Save ─────────────────────────────
 function load() {
-  try { tasks = JSON.parse(localStorage.getItem(STORAGE_KEY)) || []; } catch { tasks = []; }
+  try { tasks   = JSON.parse(localStorage.getItem(STORAGE_KEY))  || []; } catch { tasks   = []; }
+  try { presets = JSON.parse(localStorage.getItem(PRESET_KEY))   || DEFAULT_PRESETS; } catch { presets = DEFAULT_PRESETS; }
+  try { fontSize = parseInt(localStorage.getItem(FS_KEY)) || 15; } catch {}
 }
-function save() {
-  localStorage.setItem(STORAGE_KEY, JSON.stringify(tasks));
+function saveTasks()    { localStorage.setItem(STORAGE_KEY, JSON.stringify(tasks)); }
+function savePresetsLS(){ localStorage.setItem(PRESET_KEY,  JSON.stringify(presets)); }
+
+// ── Font size ────────────────────────────────
+function applyFS() {
+  document.body.style.fontSize = fontSize + 'px';
+  document.getElementById('fsLabel').textContent = fontSize;
+}
+function changeFS(delta) {
+  fontSize = Math.min(22, Math.max(11, fontSize + delta));
+  applyFS();
+  localStorage.setItem(FS_KEY, fontSize);
 }
 
-// ═══════════════════════════════════════════
-//  HELPERS
-// ═══════════════════════════════════════════
+// ── Helpers ──────────────────────────────────
 function todayStr() { return new Date().toISOString().slice(0,10); }
-
 function addDays(dateStr, n) {
   const d = new Date(dateStr);
   d.setDate(d.getDate() + Number(n));
   return d.toISOString().slice(0,10);
 }
-
 function daysLeft(dateStr) {
   if (!dateStr) return 999;
-  const today = new Date(); today.setHours(0,0,0,0);
+  const today  = new Date(); today.setHours(0,0,0,0);
   const target = new Date(dateStr); target.setHours(0,0,0,0);
   return Math.ceil((target - today) / 86400000);
 }
-
 function fmt(dateStr) {
   if (!dateStr) return '—';
-  const d = new Date(dateStr);
-  return d.toLocaleDateString('vi-VN', { day:'2-digit', month:'2-digit', year:'numeric' });
+  return new Date(dateStr).toLocaleDateString('vi-VN', { day:'2-digit', month:'2-digit', year:'numeric' });
 }
-
 function badge(dl) {
-  if (dl < 0)  return `<span class="badge red">Trễ ${Math.abs(dl)} ngày</span>`;
+  if (dl < 0)   return `<span class="badge red">Trễ ${Math.abs(dl)} ngày</span>`;
   if (dl === 0) return `<span class="badge orange">Hôm nay!</span>`;
   if (dl <= 3)  return `<span class="badge orange">${dl} ngày nữa</span>`;
   if (dl <= 7)  return `<span class="badge yellow">${dl} ngày nữa</span>`;
   return `<span class="badge green">${dl} ngày nữa</span>`;
 }
+function catOpts(selected='personal') {
+  return Object.entries(CATEGORIES).map(([k,v]) =>
+    `<option value="${k}"${k===selected?' selected':''}>${v.icon} ${v.label}</option>`
+  ).join('');
+}
 
-// ═══════════════════════════════════════════
-//  RENDER
-// ═══════════════════════════════════════════
+// ── Render tasks ─────────────────────────────
 function render() {
   let list = tasks.map(t => ({ ...t, _dl: daysLeft(t.reminderDate) }));
-
-  // filter
   if (filterCat !== 'all') list = list.filter(t => t.cat === filterCat);
-
-  // sort
   if (sortMode === 'days') list.sort((a,b) => a._dl - b._dl);
-  else list.sort((a,b) => a.name.localeCompare(b.name, 'vi'));
+  else list.sort((a,b) => a.name.localeCompare(b.name,'vi'));
 
   const container = document.getElementById('task-list');
-  const empty = document.getElementById('emptyState');
+  const empty     = document.getElementById('emptyState');
 
   if (list.length === 0) {
     container.innerHTML = '';
@@ -464,11 +571,11 @@ function render() {
   } else {
     empty.classList.remove('show');
     container.innerHTML = list.map(t => {
-      const c = CATEGORIES[t.cat] || CATEGORIES.other;
+      const c  = CATEGORIES[t.cat] || CATEGORIES.other;
       const dl = t._dl;
-      const cardClass = dl < 0 ? 'urgent' : (dl <= 7 ? 'soon' : '');
+      const cls = dl < 0 ? 'urgent' : dl <= 7 ? 'soon' : '';
       return `
-        <div class="task-card ${cardClass}" style="border-left-color:${c.color}" data-id="${t.id}">
+        <div class="task-card ${cls}" style="border-left-color:${c.color}">
           <div class="task-icon">${c.icon}</div>
           <div class="task-body">
             <div class="task-name-row">
@@ -483,7 +590,7 @@ function render() {
             ${t.notes ? `<div class="task-notes">"${t.notes}"</div>` : ''}
           </div>
           <div class="task-actions">
-            <button class="icon-btn" title="Đã làm hôm nay ✓" onclick="markDone('${t.id}')" style="color:var(--green)">✓</button>
+            <button class="icon-btn" title="Đã làm hôm nay" onclick="markDone('${t.id}')" style="color:var(--green)">✓</button>
             <button class="icon-btn" title="Chỉnh sửa" onclick="openEdit('${t.id}')">✏️</button>
             <button class="icon-btn" title="Xoá" onclick="deleteTask('${t.id}')" style="color:var(--red)">🗑</button>
           </div>
@@ -491,85 +598,70 @@ function render() {
     }).join('');
   }
 
-  // stats
-  const all = tasks;
-  const overdue = all.filter(t => daysLeft(t.reminderDate) < 0).length;
-  const soon = all.filter(t => { const d = daysLeft(t.reminderDate); return d >= 0 && d <= 7; }).length;
-  document.getElementById('statTotal').textContent = all.length;
-  document.getElementById('statSoon').textContent = soon;
+  const overdue = tasks.filter(t => daysLeft(t.reminderDate) < 0).length;
+  const soon    = tasks.filter(t => { const d = daysLeft(t.reminderDate); return d >= 0 && d <= 7; }).length;
+  document.getElementById('statTotal').textContent   = tasks.length;
+  document.getElementById('statSoon').textContent    = soon;
   document.getElementById('statOverdue').textContent = overdue;
-
-  // urgent badge
   const urgent = overdue + soon;
-  const ub = document.getElementById('urgentBadge');
   document.getElementById('urgentCount').textContent = urgent;
-  ub.classList.toggle('show', urgent > 0);
+  document.getElementById('urgentBadge').classList.toggle('show', urgent > 0);
 }
 
+// ── Render presets ───────────────────────────
 function renderPresets() {
-  const grid = document.getElementById('presetGrid');
-  grid.innerHTML = PRESETS.map(p => {
-    const c = CATEGORIES[p.cat];
+  document.getElementById('presetGrid').innerHTML = presets.map((p,i) => {
+    const c = CATEGORIES[p.cat] || CATEGORIES.other;
     return `
-      <button class="preset-chip" onclick="openPreset(${JSON.stringify(p).replace(/"/g,'&quot;')})">
+      <button class="preset-chip" onclick="openPreset(${i})">
         <div class="pname">${c.icon} ${p.name}</div>
         <div class="pinfo">Mỗi ${p.interval} ngày</div>
       </button>`;
   }).join('');
 }
 
-// ═══════════════════════════════════════════
-//  FILTER & SORT
-// ═══════════════════════════════════════════
+// ── Filter & Sort ────────────────────────────
 function setFilter(btn, cat) {
   document.querySelectorAll('.pill[data-cat]').forEach(el => el.classList.remove('active'));
   btn.classList.add('active');
-  filterCat = cat;
-  render();
+  filterCat = cat; render();
 }
-
 function setSort(mode) {
   sortMode = mode;
-  document.getElementById('sortDays').classList.toggle('active', mode === 'days');
-  document.getElementById('sortName').classList.toggle('active', mode === 'name');
+  document.getElementById('sortDays').classList.toggle('active', mode==='days');
+  document.getElementById('sortName').classList.toggle('active', mode==='name');
   render();
 }
 
-// ═══════════════════════════════════════════
-//  MODAL
-// ═══════════════════════════════════════════
+// ── Task Modal ───────────────────────────────
 function openModal(preset) {
   editId = null;
   document.getElementById('modalTitle').textContent = '➕ Thêm công việc mới';
-  document.getElementById('btnSave').textContent = 'Thêm công việc';
-  document.getElementById('fName').value = preset?.name || '';
-  document.getElementById('fCat').value  = preset?.cat  || 'personal';
-  document.getElementById('fDate').value = todayStr();
+  document.getElementById('btnSave').textContent    = 'Thêm công việc';
+  document.getElementById('fName').value     = preset?.name     || '';
+  document.getElementById('fCat').value      = preset?.cat      || 'personal';
+  document.getElementById('fDate').value     = todayStr();
   document.getElementById('fInterval').value = preset?.interval || 30;
-  document.getElementById('fNotes').value = '';
+  document.getElementById('fNotes').value    = '';
   updatePreview();
   document.getElementById('overlay').classList.add('show');
-  setTimeout(() => document.getElementById('fName').focus(), 50);
+  setTimeout(() => document.getElementById('fName').focus(), 60);
 }
-
-function openPreset(p) { openModal(p); }
-
+function openPreset(i) { openModal(presets[i]); }
 function openEdit(id) {
-  const t = tasks.find(x => x.id === id);
-  if (!t) return;
+  const t = tasks.find(x => x.id === id); if (!t) return;
   editId = id;
   document.getElementById('modalTitle').textContent = '✏️ Chỉnh sửa công việc';
-  document.getElementById('btnSave').textContent = 'Lưu thay đổi';
-  document.getElementById('fName').value = t.name;
-  document.getElementById('fCat').value  = t.cat;
-  document.getElementById('fDate').value = t.doneDate;
+  document.getElementById('btnSave').textContent    = 'Lưu thay đổi';
+  document.getElementById('fName').value     = t.name;
+  document.getElementById('fCat').value      = t.cat;
+  document.getElementById('fDate').value     = t.doneDate;
   document.getElementById('fInterval').value = t.interval;
-  document.getElementById('fNotes').value = t.notes || '';
+  document.getElementById('fNotes').value    = t.notes || '';
   updatePreview();
   document.getElementById('overlay').classList.add('show');
 }
-
-function closeModal() { document.getElementById('overlay').classList.remove('show'); }
+function closeModal()      { document.getElementById('overlay').classList.remove('show'); }
 function closeModalIfBg(e) { if (e.target === document.getElementById('overlay')) closeModal(); }
 
 function updatePreview() {
@@ -577,7 +669,6 @@ function updatePreview() {
   const d    = document.getElementById('fDate').value;
   const n    = document.getElementById('fInterval').value;
   document.getElementById('btnSave').disabled = !name;
-
   const box = document.getElementById('previewBox');
   if (d && n) {
     const rem = addDays(d, n);
@@ -586,20 +677,16 @@ function updatePreview() {
     document.getElementById('previewDays').textContent =
       dl < 0 ? `(đã qua ${Math.abs(dl)} ngày)` : dl === 0 ? '(hôm nay)' : `(${dl} ngày nữa)`;
     box.classList.add('show');
-  } else {
-    box.classList.remove('show');
-  }
+  } else { box.classList.remove('show'); }
 }
 
 function saveTask() {
-  const name     = document.getElementById('fName').value.trim();
+  const name     = document.getElementById('fName').value.trim(); if (!name) return;
   const cat      = document.getElementById('fCat').value;
   const doneDate = document.getElementById('fDate').value;
   const interval = parseInt(document.getElementById('fInterval').value) || 30;
   const notes    = document.getElementById('fNotes').value.trim();
   const reminderDate = addDays(doneDate, interval);
-
-  if (!name) return;
 
   if (editId) {
     const idx = tasks.findIndex(t => t.id === editId);
@@ -609,30 +696,73 @@ function saveTask() {
     tasks.push({ id: crypto.randomUUID(), name, cat, doneDate, interval, notes, reminderDate });
     showToast('✅ Đã thêm công việc mới');
   }
-
-  save(); render(); closeModal();
+  saveTasks(); render(); closeModal();
 }
 
 function markDone(id) {
-  const idx = tasks.findIndex(t => t.id === id);
-  if (idx < 0) return;
+  const idx = tasks.findIndex(t => t.id === id); if (idx < 0) return;
   const today = todayStr();
   tasks[idx].doneDate = today;
   tasks[idx].reminderDate = addDays(today, tasks[idx].interval);
-  save(); render();
-  showToast('✓ Đã đánh dấu hoàn thành — lịch nhắc được cập nhật!');
+  saveTasks(); render();
+  showToast('✓ Đã hoàn thành — lịch nhắc đã cập nhật!');
 }
 
 function deleteTask(id) {
   if (!confirm('Bạn có chắc muốn xoá công việc này?')) return;
   tasks = tasks.filter(t => t.id !== id);
-  save(); render();
+  saveTasks(); render();
   showToast('🗑 Đã xoá công việc');
 }
 
-// ═══════════════════════════════════════════
-//  TOAST
-// ═══════════════════════════════════════════
+// ── Preset Editor ────────────────────────────
+function openPresetEditor() {
+  renderPresetEditorList();
+  document.getElementById('overlayPresets').classList.add('show');
+}
+function closePresetEditor() { document.getElementById('overlayPresets').classList.remove('show'); }
+function closePEIfBg(e)      { if (e.target === document.getElementById('overlayPresets')) closePresetEditor(); }
+
+function renderPresetEditorList() {
+  document.getElementById('presetEditorList').innerHTML = presets.map((p, i) => `
+    <div class="preset-row" id="prow-${i}">
+      <input type="text" value="${p.name}" placeholder="Tên việc" id="pname-${i}" />
+      <select id="pcat-${i}">${catOpts(p.cat)}</select>
+      <input class="pcol-interval" type="number" min="1" value="${p.interval}" placeholder="Ngày" id="pint-${i}" style="text-align:center" title="Chu kỳ (ngày)" />
+      <button class="del-btn" onclick="removePresetRow(${i})" title="Xoá">🗑</button>
+    </div>`
+  ).join('');
+}
+
+function addPresetRow() {
+  presets.push({ name: '', cat: 'personal', interval: 30 });
+  renderPresetEditorList();
+  document.getElementById(`pname-${presets.length-1}`)?.focus();
+}
+
+function removePresetRow(i) {
+  presets.splice(i, 1);
+  renderPresetEditorList();
+}
+
+function savePresets() {
+  const newPresets = [];
+  let i = 0;
+  while (document.getElementById(`prow-${i}`)) {
+    const name = (document.getElementById(`pname-${i}`)?.value || '').trim();
+    const cat  =  document.getElementById(`pcat-${i}`)?.value  || 'personal';
+    const intv = parseInt(document.getElementById(`pint-${i}`)?.value) || 30;
+    if (name) newPresets.push({ name, cat, interval: intv });
+    i++;
+  }
+  presets = newPresets;
+  savePresetsLS();
+  renderPresets();
+  closePresetEditor();
+  showToast('✅ Đã lưu danh sách mẫu việc');
+}
+
+// ── Toast ────────────────────────────────────
 let toastTimer;
 function showToast(msg) {
   const el = document.getElementById('toast');
@@ -642,18 +772,15 @@ function showToast(msg) {
   toastTimer = setTimeout(() => el.classList.remove('show'), 2800);
 }
 
-// ═══════════════════════════════════════════
-//  KEYBOARD
-// ═══════════════════════════════════════════
+// ── Keyboard ─────────────────────────────────
 document.addEventListener('keydown', e => {
-  if (e.key === 'Escape') closeModal();
+  if (e.key === 'Escape') { closeModal(); closePresetEditor(); }
   if ((e.ctrlKey || e.metaKey) && e.key === 'Enter') saveTask();
 });
 
-// ═══════════════════════════════════════════
-//  INIT
-// ═══════════════════════════════════════════
+// ── Init ─────────────────────────────────────
 load();
+applyFS();
 renderPresets();
 render();
 </script>
