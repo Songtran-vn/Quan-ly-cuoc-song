@@ -10,23 +10,23 @@
     *, *::before, *::after { box-sizing: border-box; margin: 0; padding: 0; }
 
     :root {
-      --bg:       #F2F5FF;
-      --bg2:      #E6EAFF;
-      --surface:  #FFFFFF;
-      --border:   #D4DAFF;
-      --border2:  #BBC5FF;
-      --text:     #1A1A40;
-      --text2:    #4A4A80;
-      --text3:    #8888B8;
-      --accent:   #4F46E5;
-      --accent2:  #0891B2;
-      --red:      #DC2626;
-      --orange:   #EA580C;
-      --green:    #16A34A;
-      --yellow:   #D97706;
-      --shadow:   0 2px 10px rgba(79,70,229,0.07);
-      --shadow-lg:0 8px 28px rgba(79,70,229,0.13);
-      --font:     'Be Vietnam Pro', system-ui, sans-serif;
+      --bg:        #F2F5FF;
+      --bg2:       #E6EAFF;
+      --surface:   #FFFFFF;
+      --border:    #D4DAFF;
+      --border2:   #BBC5FF;
+      --text:      #1A1A40;
+      --text2:     #4A4A80;
+      --text3:     #8888B8;
+      --accent:    #4F46E5;
+      --accent2:   #0891B2;
+      --red:       #DC2626;
+      --orange:    #EA580C;
+      --green:     #16A34A;
+      --yellow:    #D97706;
+      --shadow:    0 2px 10px rgba(79,70,229,0.07);
+      --shadow-lg: 0 8px 28px rgba(79,70,229,0.13);
+      --font:      'Be Vietnam Pro', system-ui, sans-serif;
     }
 
     body {
@@ -41,7 +41,56 @@
     ::-webkit-scrollbar-track { background: var(--bg2); }
     ::-webkit-scrollbar-thumb { background: var(--border2); border-radius: 4px; }
 
-    /* ══ HEADER ══════════════════════════════ */
+    /* ══ WELCOME SCREEN ═════════════════════════════ */
+    #welcomeScreen {
+      position: fixed; inset: 0; z-index: 999;
+      background: linear-gradient(135deg, #EEF2FF 0%, #F0F9FF 100%);
+      display: flex; align-items: center; justify-content: center; padding: 20px;
+    }
+    .welcome-card {
+      background: #fff; border: 1.5px solid var(--border2);
+      border-radius: 24px; padding: 40px 36px; width: 100%; max-width: 400px;
+      box-shadow: 0 24px 70px rgba(79,70,229,0.14);
+      text-align: center; animation: slideUp .4s ease;
+    }
+    .welcome-logo {
+      width: 64px; height: 64px; border-radius: 18px;
+      background: linear-gradient(135deg, var(--accent), var(--accent2));
+      display: grid; place-items: center; font-size: 30px;
+      margin: 0 auto 20px; box-shadow: 0 8px 24px rgba(79,70,229,0.28);
+    }
+    .welcome-card h2 { font-size: 1.4em; font-weight: 800; color: var(--accent); margin-bottom: 6px; }
+    .welcome-card p  { font-size: 0.85em; color: var(--text3); margin-bottom: 28px; }
+    .welcome-field { text-align: left; margin-bottom: 20px; }
+    .welcome-field label { font-size: 0.75em; font-weight: 700; color: var(--text3); text-transform: uppercase; letter-spacing: .4px; display: block; margin-bottom: 7px; }
+    .welcome-field input {
+      width: 100%; padding: 12px 16px; font-size: 1em; font-family: var(--font);
+      background: var(--bg); border: 1.5px solid var(--border2);
+      color: var(--text); border-radius: 12px; outline: none;
+      transition: border-color .2s, box-shadow .2s;
+    }
+    .welcome-field input:focus { border-color: var(--accent); box-shadow: 0 0 0 3px rgba(79,70,229,.1); }
+    .btn-welcome {
+      width: 100%; padding: 13px; font-size: 1em; font-weight: 700;
+      font-family: var(--font); border: none; border-radius: 13px; cursor: pointer;
+      background: linear-gradient(135deg, var(--accent), var(--accent2));
+      color: #fff; box-shadow: 0 4px 16px rgba(79,70,229,.28);
+      transition: opacity .2s, transform .15s;
+    }
+    .btn-welcome:hover { opacity: .88; transform: scale(1.02); }
+    .btn-welcome:disabled { opacity: .35; cursor: not-allowed; transform: none; }
+
+    /* username chip in header */
+    .user-chip {
+      display: flex; align-items: center; gap: 6px;
+      background: var(--bg2); border: 1.5px solid var(--border);
+      border-radius: 20px; padding: 5px 12px;
+      font-size: 0.78em; font-weight: 700; color: var(--text2);
+      cursor: pointer; transition: all .18s;
+    }
+    .user-chip:hover { border-color: var(--accent); color: var(--accent); }
+
+    /* ══ HEADER ══════════════════════════════════════ */
     header {
       position: sticky; top: 0; z-index: 200;
       background: rgba(255,255,255,0.94);
@@ -51,7 +100,7 @@
       box-shadow: 0 2px 14px rgba(79,70,229,0.07);
     }
     .header-inner {
-      max-width: 820px; margin: 0 auto;
+      max-width: 840px; margin: 0 auto;
       display: flex; align-items: center; justify-content: space-between; gap: 10px; flex-wrap: wrap;
     }
     .logo { display: flex; align-items: center; gap: 10px; }
@@ -59,42 +108,46 @@
       width: 40px; height: 40px; border-radius: 12px;
       background: linear-gradient(135deg, var(--accent), var(--accent2));
       display: grid; place-items: center; font-size: 20px;
-      box-shadow: 0 4px 14px rgba(79,70,229,0.28);
-      flex-shrink: 0;
+      box-shadow: 0 4px 14px rgba(79,70,229,0.28); flex-shrink: 0;
     }
     .logo-text h1 { font-size: 1.1em; font-weight: 800; color: var(--accent); }
     .logo-text p  { font-size: 0.72em; color: var(--text3); margin-top: 1px; }
-
-    .header-right { display: flex; align-items: center; gap: 8px; flex-wrap: wrap; }
+    .header-right { display: flex; align-items: center; gap: 7px; flex-wrap: wrap; }
 
     .urgent-badge {
       background: #FEF2F2; color: var(--red);
-      border: 1.5px solid #FECACA;
-      border-radius: 20px; padding: 4px 12px;
-      font-size: 0.78em; font-weight: 700;
-      display: none; align-items: center; gap: 4px;
+      border: 1.5px solid #FECACA; border-radius: 20px; padding: 4px 11px;
+      font-size: 0.76em; font-weight: 700; display: none; align-items: center; gap: 4px;
     }
     .urgent-badge.show { display: inline-flex; }
 
-    /* Font size controls */
     .fs-controls {
-      display: flex; align-items: center; gap: 1px;
+      display: flex; align-items: center;
       background: var(--bg2); border: 1.5px solid var(--border);
       border-radius: 10px; padding: 3px 4px; gap: 2px;
     }
     .fs-btn {
-      width: 30px; height: 28px; border: none; background: transparent;
+      width: 29px; height: 27px; border: none; background: transparent;
       border-radius: 7px; cursor: pointer; font-family: var(--font);
-      font-weight: 800; color: var(--text2); font-size: 0.82em;
-      transition: background .15s, color .15s;
-      display: grid; place-items: center; line-height: 1;
+      font-weight: 800; color: var(--text2); font-size: 0.8em;
+      transition: background .15s, color .15s; display: grid; place-items: center;
     }
     .fs-btn:hover { background: var(--surface); color: var(--accent); }
     .fs-label {
-      font-size: 0.75em; color: var(--text3); font-weight: 700;
-      padding: 0 3px; min-width: 26px; text-align: center;
+      font-size: 0.73em; color: var(--text3); font-weight: 700;
+      padding: 0 4px; min-width: 26px; text-align: center;
       border-left: 1px solid var(--border); border-right: 1px solid var(--border);
     }
+
+    /* Backup buttons */
+    .btn-backup {
+      display: flex; align-items: center; gap: 5px;
+      background: var(--bg2); border: 1.5px solid var(--border2);
+      color: var(--accent); border-radius: 10px;
+      padding: 6px 12px; font-size: 0.78em; font-weight: 700;
+      cursor: pointer; font-family: var(--font); transition: all .18s; white-space: nowrap;
+    }
+    .btn-backup:hover { background: var(--accent); color: #fff; border-color: var(--accent); }
 
     .btn-add {
       background: linear-gradient(135deg, var(--accent), var(--accent2));
@@ -106,10 +159,29 @@
     }
     .btn-add:hover { opacity: .88; transform: scale(1.03); }
 
-    /* ══ MAIN ════════════════════════════════ */
-    main { max-width: 820px; margin: 0 auto; padding: 22px 16px 40px; }
+    /* ══ MAIN ════════════════════════════════════════ */
+    main { max-width: 840px; margin: 0 auto; padding: 22px 16px 40px; }
 
-    /* ══ STATS ═══════════════════════════════ */
+    /* ══ BACKUP NOTICE ═══════════════════════════════ */
+    .backup-bar {
+      background: #EFF6FF; border: 1.5px solid #BFDBFE;
+      border-radius: 12px; padding: 11px 16px; margin-bottom: 18px;
+      display: flex; align-items: center; justify-content: space-between; gap: 12px; flex-wrap: wrap;
+    }
+    .backup-bar-text { font-size: 0.8em; color: #1D4ED8; }
+    .backup-bar-text b { font-weight: 700; }
+    .backup-bar-actions { display: flex; gap: 8px; }
+    .btn-sm {
+      font-size: 0.76em; font-weight: 700; font-family: var(--font);
+      border-radius: 8px; padding: 5px 12px; cursor: pointer; border: 1.5px solid;
+      transition: all .15s;
+    }
+    .btn-sm.export { background: #fff; border-color: #93C5FD; color: #1D4ED8; }
+    .btn-sm.export:hover { background: #1D4ED8; color: #fff; border-color: #1D4ED8; }
+    .btn-sm.import { background: #fff; border-color: #6EE7B7; color: var(--green); }
+    .btn-sm.import:hover { background: var(--green); color: #fff; border-color: var(--green); }
+
+    /* ══ STATS ═══════════════════════════════════════ */
     .stats { display: grid; grid-template-columns: repeat(3,1fr); gap: 12px; margin-bottom: 22px; }
     .stat-card {
       background: var(--surface); border: 1.5px solid var(--border);
@@ -119,7 +191,7 @@
     .stat-value { font-size: 1.9em; font-weight: 800; line-height: 1; }
     .stat-label { font-size: 0.7em; color: var(--text3); margin-top: 4px; text-transform: uppercase; letter-spacing: .5px; }
 
-    /* ══ TOOLBAR ══════════════════════════════ */
+    /* ══ TOOLBAR ═════════════════════════════════════ */
     .toolbar { display: flex; flex-wrap: wrap; gap: 6px; margin-bottom: 18px; align-items: center; }
     .pill {
       border: 1.5px solid var(--border); border-radius: 20px;
@@ -132,17 +204,13 @@
     .pill.active { background: var(--accent); border-color: var(--accent); color: #fff; box-shadow: 0 2px 10px rgba(79,70,229,.22); }
     .sort-group { display: flex; gap: 5px; margin-left: auto; }
 
-    /* ══ TASK CARDS ══════════════════════════ */
+    /* ══ TASK CARDS ══════════════════════════════════ */
     #task-list { display: flex; flex-direction: column; gap: 10px; }
-
     .task-card {
-      background: var(--surface);
-      border: 1.5px solid var(--border);
-      border-left: 5px solid #ccc;
+      background: var(--surface); border: 1.5px solid var(--border); border-left: 5px solid #ccc;
       border-radius: 14px; padding: 14px 16px;
       display: flex; align-items: center; gap: 13px;
-      box-shadow: var(--shadow);
-      animation: fadeUp .3s ease both;
+      box-shadow: var(--shadow); animation: fadeUp .3s ease both;
       transition: transform .15s, box-shadow .15s;
     }
     .task-card:hover { transform: translateY(-2px); box-shadow: var(--shadow-lg); }
@@ -165,7 +233,7 @@
     }
     .icon-btn:hover { background: var(--bg2); }
 
-    /* ══ BADGES ══════════════════════════════ */
+    /* ══ BADGES ══════════════════════════════════════ */
     .badge {
       display: inline-flex; align-items: center; border-radius: 20px;
       padding: 2px 9px; font-size: 0.7em; font-weight: 700; white-space: nowrap;
@@ -175,13 +243,13 @@
     .badge.yellow { background: #FFFBEB; color: var(--yellow); border: 1.5px solid #FDE68A; }
     .badge.green  { background: #F0FDF4; color: var(--green);  border: 1.5px solid #BBF7D0; }
 
-    /* ══ EMPTY ═══════════════════════════════ */
+    /* ══ EMPTY ═══════════════════════════════════════ */
     .empty { text-align: center; padding: 60px 20px; color: var(--text3); display: none; }
     .empty.show { display: block; }
     .empty-icon { font-size: 3em; margin-bottom: 12px; }
     .empty h3 { font-size: 1em; font-weight: 700; color: var(--text2); margin-bottom: 6px; }
 
-    /* ══ PRESETS ═════════════════════════════ */
+    /* ══ PRESETS ═════════════════════════════════════ */
     .presets-section { margin-top: 32px; border-top: 1.5px solid var(--border); padding-top: 20px; }
     .section-header { display: flex; align-items: center; justify-content: space-between; margin-bottom: 12px; }
     .section-title { font-size: 0.72em; font-weight: 700; color: var(--text3); text-transform: uppercase; letter-spacing: 1px; }
@@ -192,7 +260,6 @@
       font-family: var(--font); transition: all .15s;
     }
     .btn-edit-presets:hover { background: var(--accent); color: #fff; border-color: var(--accent); }
-
     .preset-grid { display: grid; grid-template-columns: repeat(auto-fill, minmax(148px,1fr)); gap: 8px; }
     .preset-chip {
       background: var(--surface); border: 1.5px solid var(--border);
@@ -204,20 +271,19 @@
     .preset-chip .pname { font-size: 0.85em; font-weight: 700; color: var(--text); }
     .preset-chip .pinfo { font-size: 0.71em; color: var(--text3); margin-top: 3px; }
 
-    /* ══ FOOTER ══════════════════════════════ */
+    /* ══ FOOTER ══════════════════════════════════════ */
     footer {
-      background: var(--surface);
-      border-top: 1.5px solid var(--border);
+      background: var(--surface); border-top: 1.5px solid var(--border);
       text-align: center; padding: 22px 16px;
     }
-    .footer-inner { max-width: 820px; margin: 0 auto; }
+    .footer-inner { max-width: 840px; margin: 0 auto; }
     .footer-name  { font-size: 0.95em; font-weight: 800; color: var(--accent); }
     .footer-phone { font-size: 0.85em; color: var(--text2); margin-top: 4px; font-weight: 600; }
     .footer-note  { font-size: 0.72em; color: var(--text3); margin-top: 5px; }
 
-    /* ══ OVERLAY / MODAL ═════════════════════ */
+    /* ══ OVERLAY / MODAL ═════════════════════════════ */
     .overlay {
-      position: fixed; inset: 0; background: rgba(15,15,40,.3);
+      position: fixed; inset: 0; background: rgba(15,15,40,.28);
       z-index: 500; display: none; align-items: center; justify-content: center;
       padding: 16px; backdrop-filter: blur(6px);
     }
@@ -226,8 +292,7 @@
       background: var(--surface); border: 1.5px solid var(--border2);
       border-radius: 22px; padding: 28px; width: 100%; max-width: 500px;
       box-shadow: 0 24px 70px rgba(79,70,229,.16);
-      animation: slideUp .25s ease;
-      max-height: 90vh; overflow-y: auto;
+      animation: slideUp .25s ease; max-height: 90vh; overflow-y: auto;
     }
     .modal h2 { font-size: 1.05em; font-weight: 800; margin-bottom: 20px; }
 
@@ -271,7 +336,7 @@
     .btn-save:hover { opacity: .88; }
     .btn-save:disabled { opacity: .35; cursor: not-allowed; }
 
-    /* ══ PRESET EDITOR ═══════════════════════ */
+    /* ══ PRESET EDITOR ═══════════════════════════════ */
     .preset-editor-list { display: flex; flex-direction: column; gap: 8px; margin-bottom: 10px; }
     .preset-row {
       display: grid; grid-template-columns: 1fr 100px 72px 34px;
@@ -299,7 +364,30 @@
     }
     .btn-add-preset:hover { background: #EEF0FF; border-color: var(--accent); }
 
-    /* ══ TOAST ════════════════════════════════ */
+    /* ══ IMPORT MODAL ════════════════════════════════ */
+    .import-drop {
+      border: 2px dashed var(--border2); border-radius: 14px;
+      padding: 32px 20px; text-align: center; cursor: pointer;
+      transition: all .2s; margin-bottom: 14px;
+      background: var(--bg);
+    }
+    .import-drop:hover, .import-drop.dragover { border-color: var(--accent); background: #EEF0FF; }
+    .import-drop-icon { font-size: 2.2em; margin-bottom: 8px; }
+    .import-drop p { font-size: 0.85em; color: var(--text2); font-weight: 600; }
+    .import-drop small { font-size: 0.75em; color: var(--text3); }
+    .import-info {
+      background: #F0FDF4; border: 1.5px solid #BBF7D0;
+      border-radius: 10px; padding: 10px 14px;
+      font-size: 0.82em; color: var(--green); margin-bottom: 14px; display: none;
+    }
+    .import-info.show { display: block; }
+    .import-warn {
+      background: #FFFBEB; border: 1.5px solid #FDE68A;
+      border-radius: 10px; padding: 10px 14px;
+      font-size: 0.82em; color: var(--yellow); margin-bottom: 14px;
+    }
+
+    /* ══ TOAST ═══════════════════════════════════════ */
     .toast {
       position: fixed; bottom: 24px; left: 50%;
       transform: translateX(-50%) translateY(70px);
@@ -320,18 +408,36 @@
       from { opacity: 0; transform: translateY(26px); }
       to   { opacity: 1; transform: translateY(0); }
     }
-
-    @media (max-width: 500px) {
+    @media (max-width: 520px) {
       .stat-value { font-size: 1.5em; }
       .grid2 { grid-template-columns: 1fr; }
       .preset-row { grid-template-columns: 1fr 80px 34px; }
       .preset-row .pcol-interval { display: none; }
+      .backup-bar { flex-direction: column; align-items: flex-start; }
     }
   </style>
 </head>
 <body>
 
-<!-- ══ HEADER ════════════════════════════════ -->
+<!-- ══ WELCOME SCREEN ════════════════════════════ -->
+<div id="welcomeScreen">
+  <div class="welcome-card">
+    <div class="welcome-logo">📋</div>
+    <h2>Nhắc Việc</h2>
+    <p>Ứng dụng quản lý công việc định kỳ trong cuộc sống</p>
+    <div class="welcome-field">
+      <label>Tên của bạn là gì?</label>
+      <input id="inputUsername" type="text" placeholder="VD: Nguyễn Văn A…"
+             oninput="document.getElementById('btnStartApp').disabled=!this.value.trim()"
+             onkeydown="if(event.key==='Enter')startApp()" autofocus />
+    </div>
+    <button class="btn-welcome" id="btnStartApp" onclick="startApp()" disabled>
+      Bắt đầu sử dụng →
+    </button>
+  </div>
+</div>
+
+<!-- ══ HEADER ════════════════════════════════════ -->
 <header>
   <div class="header-inner">
     <div class="logo">
@@ -344,19 +450,38 @@
     <div class="header-right">
       <span class="urgent-badge" id="urgentBadge">⚡ <span id="urgentCount">0</span> cần làm</span>
 
+      <!-- User chip -->
+      <span class="user-chip" onclick="editUsername()" title="Đổi tên">👤 <span id="headerUsername"></span></span>
       <div class="fs-controls" title="Điều chỉnh cỡ chữ">
         <button class="fs-btn" onclick="changeFS(-1)">A−</button>
         <span class="fs-label" id="fsLabel">15</span>
         <button class="fs-btn" onclick="changeFS(1)">A+</button>
       </div>
 
+      <!-- Backup buttons -->
+      <button class="btn-backup" onclick="exportData()" title="Xuất dữ liệu ra file JSON">⬇️ Xuất</button>
+      <button class="btn-backup" onclick="openImport()" title="Nhập dữ liệu từ file JSON">⬆️ Nhập</button>
+
       <button class="btn-add" onclick="openModal()">+ Thêm việc</button>
     </div>
   </div>
 </header>
 
-<!-- ══ MAIN ══════════════════════════════════ -->
+<!-- ══ MAIN ══════════════════════════════════════ -->
 <main>
+
+  <!-- Backup notice bar -->
+  <div class="backup-bar" id="backupBar" style="display:none">
+    <div class="backup-bar-text">
+      💾 <b>Mẹo bảo vệ dữ liệu:</b> Xuất file backup định kỳ để không mất dữ liệu khi nâng cấp app.
+    </div>
+    <div class="backup-bar-actions">
+      <button class="btn-sm export" onclick="exportData()">⬇️ Xuất ngay</button>
+      <button class="btn-sm" onclick="dismissBar()" style="background:#fff;border-color:#D4DAFF;color:var(--text3)">✕ Bỏ qua</button>
+    </div>
+  </div>
+
+  <!-- Stats -->
   <div class="stats">
     <div class="stat-card" style="animation-delay:.05s">
       <div class="stat-value" id="statTotal" style="color:var(--accent)">0</div>
@@ -372,6 +497,7 @@
     </div>
   </div>
 
+  <!-- Toolbar -->
   <div class="toolbar">
     <button class="pill active" data-cat="all"      onclick="setFilter(this,'all')">Tất cả</button>
     <button class="pill" data-cat="personal" onclick="setFilter(this,'personal')">✂️ Cá nhân</button>
@@ -386,6 +512,7 @@
     </div>
   </div>
 
+  <!-- Task list -->
   <div id="task-list"></div>
   <div class="empty" id="emptyState">
     <div class="empty-icon">✨</div>
@@ -393,6 +520,7 @@
     <p>Nhấn "+ Thêm việc" hoặc chọn nhanh từ mẫu bên dưới</p>
   </div>
 
+  <!-- Presets -->
   <div class="presets-section">
     <div class="section-header">
       <div class="section-title">⚡ Thêm nhanh từ mẫu</div>
@@ -402,7 +530,7 @@
   </div>
 </main>
 
-<!-- ══ FOOTER ═════════════════════════════════ -->
+<!-- ══ FOOTER ═════════════════════════════════════ -->
 <footer>
   <div class="footer-inner">
     <div class="footer-name">👨‍💻 Trần Đức Sông</div>
@@ -411,7 +539,7 @@
   </div>
 </footer>
 
-<!-- ══ MODAL: THÊM / SỬA VIỆC ════════════════ -->
+<!-- ══ MODAL: THÊM / SỬA VIỆC ════════════════════ -->
 <div class="overlay" id="overlay" onclick="closeModalIfBg(event)">
   <div class="modal">
     <h2 id="modalTitle">➕ Thêm công việc mới</h2>
@@ -454,11 +582,11 @@
   </div>
 </div>
 
-<!-- ══ MODAL: SỬA MẪU ════════════════════════ -->
+<!-- ══ MODAL: SỬA MẪU ════════════════════════════ -->
 <div class="overlay" id="overlayPresets" onclick="closePEIfBg(event)">
   <div class="modal" style="max-width:560px">
     <h2>✏️ Sửa danh sách mẫu việc</h2>
-    <p style="font-size:.82em;color:var(--text3);margin-bottom:14px">Tuỳ chỉnh tên, danh mục và chu kỳ của từng mẫu. Thay đổi sẽ được lưu lại.</p>
+    <p style="font-size:.82em;color:var(--text3);margin-bottom:14px">Tuỳ chỉnh tên, danh mục và chu kỳ. Thay đổi được lưu lại vào trình duyệt.</p>
     <div class="preset-editor-list" id="presetEditorList"></div>
     <button class="btn-add-preset" onclick="addPresetRow()">+ Thêm mẫu mới</button>
     <div class="modal-footer">
@@ -468,13 +596,51 @@
   </div>
 </div>
 
-<!-- ══ TOAST ══════════════════════════════════ -->
+<!-- ══ MODAL: NHẬP DỮ LIỆU ═══════════════════════ -->
+<div class="overlay" id="overlayImport" onclick="closeImportIfBg(event)">
+  <div class="modal" style="max-width:480px">
+    <h2>⬆️ Nhập dữ liệu từ backup</h2>
+
+    <div class="import-drop" id="importDrop"
+         onclick="document.getElementById('fileInput').click()"
+         ondragover="onDragOver(event)" ondragleave="onDragLeave(event)" ondrop="onDrop(event)">
+      <div class="import-drop-icon">📂</div>
+      <p>Nhấn để chọn file hoặc kéo thả vào đây</p>
+      <small>File .json được xuất từ Nhắc Việc</small>
+    </div>
+    <input type="file" id="fileInput" accept=".json" style="display:none" onchange="onFileSelected(event)" />
+
+    <div class="import-info" id="importInfo"></div>
+
+    <div class="import-warn">
+      ⚠️ <b>Lưu ý:</b> Nhập sẽ <b>gộp</b> dữ liệu backup vào danh sách hiện tại (không xoá việc cũ). Công việc trùng ID sẽ được bỏ qua.
+    </div>
+
+    <div class="modal-footer">
+      <button class="btn-cancel" onclick="closeImport()">Huỷ</button>
+      <button class="btn-save" id="btnImport" onclick="doImport()" disabled>⬆️ Nhập dữ liệu</button>
+    </div>
+  </div>
+</div>
+
+<!-- ══ TOAST ══════════════════════════════════════ -->
 <div class="toast" id="toast"></div>
 
+<!-- hidden file input trigger -->
 <script>
-const STORAGE_KEY = 'nhac-viec-v3';
-const PRESET_KEY  = 'nhac-viec-presets-v1';
-const FS_KEY      = 'nhac-viec-fs';
+// ════════════════════════════════════════════════════
+//  STORAGE KEYS — CỐ ĐỊNH, KHÔNG BAO GIỜ THAY ĐỔI
+//  Dù app nâng cấp bao nhiêu lần, key này luôn giữ
+//  nguyên để dữ liệu người dùng không bị mất.
+// ════════════════════════════════════════════════════
+const KEY_TASKS   = 'nhac-viec-tasks';    // ← cố định vĩnh viễn
+const KEY_PRESETS = 'nhac-viec-presets';  // ← cố định vĩnh viễn
+const KEY_FS      = 'nhac-viec-fs';       // ← cố định vĩnh viễn
+const KEY_USER    = 'nhac-viec-user';     // ← cố định vĩnh viễn
+const KEY_BAR     = 'nhac-viec-bar-dismissed';
+
+// Schema version — dùng để migration khi cấu trúc data thay đổi
+const SCHEMA_VERSION = 1;
 
 const CATEGORIES = {
   personal: { label: 'Cá nhân',   icon: '✂️', color: '#7C3AED' },
@@ -504,17 +670,98 @@ let editId   = null;
 let filterCat = 'all';
 let sortMode  = 'days';
 let fontSize  = 15;
+let username  = '';
+let importPending = null; // data chờ import
 
-// ── Load / Save ─────────────────────────────
-function load() {
-  try { tasks   = JSON.parse(localStorage.getItem(STORAGE_KEY))  || []; } catch { tasks   = []; }
-  try { presets = JSON.parse(localStorage.getItem(PRESET_KEY))   || DEFAULT_PRESETS; } catch { presets = DEFAULT_PRESETS; }
-  try { fontSize = parseInt(localStorage.getItem(FS_KEY)) || 15; } catch {}
+// ════════════════════════════════════════════════════
+//  MIGRATION — chạy khi load, chuyển data cũ → mới
+// ════════════════════════════════════════════════════
+function migrateTask(t) {
+  // v1: đảm bảo có đủ các trường cần thiết
+  return {
+    id:           t.id           || crypto.randomUUID(),
+    name:         t.name         || '(Không tên)',
+    cat:          t.cat          || t.category || 'other',   // hỗ trợ key cũ "category"
+    doneDate:     t.doneDate     || t.done_date || todayStr(),
+    interval:     Number(t.interval || t.intervalDays || 30), // hỗ trợ key cũ "intervalDays"
+    notes:        t.notes        || '',
+    reminderDate: t.reminderDate || t.reminder_date || addDays(t.doneDate || todayStr(), t.interval || 30),
+    _v: SCHEMA_VERSION,
+  };
 }
-function saveTasks()    { localStorage.setItem(STORAGE_KEY, JSON.stringify(tasks)); }
-function savePresetsLS(){ localStorage.setItem(PRESET_KEY,  JSON.stringify(presets)); }
 
-// ── Font size ────────────────────────────────
+// ════════════════════════════════════════════════════
+//  LOAD / SAVE
+// ════════════════════════════════════════════════════
+function load() {
+  // Tasks
+  try {
+    const raw = JSON.parse(localStorage.getItem(KEY_TASKS));
+    if (Array.isArray(raw)) {
+      tasks = raw.map(migrateTask); // migration tự động
+    } else {
+      // Thử đọc key cũ (v2, v3) nếu có — giúp người dùng cũ không mất data
+      const legacyKeys = ['nhac-viec-v3', 'nhac-viec-v2'];
+      for (const lk of legacyKeys) {
+        const legacy = JSON.parse(localStorage.getItem(lk));
+        if (Array.isArray(legacy) && legacy.length > 0) {
+          tasks = legacy.map(migrateTask);
+          saveTasks(); // lưu lại vào key chuẩn
+          localStorage.removeItem(lk); // xoá key cũ
+          showToast('✅ Đã chuyển dữ liệu cũ sang phiên bản mới!');
+          break;
+        }
+      }
+    }
+  } catch { tasks = []; }
+
+  // Presets
+  try {
+    const raw = JSON.parse(localStorage.getItem(KEY_PRESETS));
+    presets = Array.isArray(raw) && raw.length > 0 ? raw : DEFAULT_PRESETS;
+  } catch { presets = DEFAULT_PRESETS; }
+
+  // Font size
+  try { fontSize = parseInt(localStorage.getItem(KEY_FS)) || 15; } catch {}
+
+  // Username
+  try { username = localStorage.getItem(KEY_USER) || ''; } catch {}
+
+  // Backup bar
+  const dismissed = localStorage.getItem(KEY_BAR);
+  if (!dismissed && tasks.length > 0) {
+    document.getElementById('backupBar').style.display = 'flex';
+  }
+}
+
+function saveTasks()    { localStorage.setItem(KEY_TASKS,   JSON.stringify(tasks)); }
+function savePresetsLS(){ localStorage.setItem(KEY_PRESETS, JSON.stringify(presets)); }
+
+// ════════════════════════════════════════════════════
+//  MODULE: USER
+// ════════════════════════════════════════════════════
+function startApp() {
+  const val = document.getElementById('inputUsername').value.trim();
+  if (!val) return;
+  username = val;
+  localStorage.setItem(KEY_USER, username);
+  document.getElementById('welcomeScreen').style.display = 'none';
+  document.getElementById('headerUsername').textContent = username;
+}
+
+function editUsername() {
+  const newName = prompt('Đổi tên của bạn:', username);
+  if (newName && newName.trim()) {
+    username = newName.trim();
+    localStorage.setItem(KEY_USER, username);
+    document.getElementById('headerUsername').textContent = username;
+    showToast('✅ Đã cập nhật tên: ' + username);
+  }
+}
+
+// ════════════════════════════════════════════════════
+//  FONT SIZE
+// ════════════════════════════════════════════════════
 function applyFS() {
   document.body.style.fontSize = fontSize + 'px';
   document.getElementById('fsLabel').textContent = fontSize;
@@ -522,10 +769,20 @@ function applyFS() {
 function changeFS(delta) {
   fontSize = Math.min(22, Math.max(11, fontSize + delta));
   applyFS();
-  localStorage.setItem(FS_KEY, fontSize);
+  localStorage.setItem(KEY_FS, fontSize);
 }
 
-// ── Helpers ──────────────────────────────────
+// ════════════════════════════════════════════════════
+//  BACKUP BAR
+// ════════════════════════════════════════════════════
+function dismissBar() {
+  document.getElementById('backupBar').style.display = 'none';
+  localStorage.setItem(KEY_BAR, '1');
+}
+
+// ════════════════════════════════════════════════════
+//  HELPERS
+// ════════════════════════════════════════════════════
 function todayStr() { return new Date().toISOString().slice(0,10); }
 function addDays(dateStr, n) {
   const d = new Date(dateStr);
@@ -555,7 +812,108 @@ function catOpts(selected='personal') {
   ).join('');
 }
 
-// ── Render tasks ─────────────────────────────
+// ════════════════════════════════════════════════════
+//  EXPORT
+// ════════════════════════════════════════════════════
+function exportData() {
+  const payload = {
+    app:       'nhac-viec',
+    version:   SCHEMA_VERSION,
+    exportedAt: new Date().toISOString(),
+    tasks,
+    presets,
+  };
+  const blob = new Blob([JSON.stringify(payload, null, 2)], { type: 'application/json' });
+  const url  = URL.createObjectURL(blob);
+  const a    = document.createElement('a');
+  const date = new Date().toLocaleDateString('vi-VN').replace(/\//g,'-');
+  a.href     = url;
+  a.download = `nhac-viec-backup-${date}.json`;
+  a.click();
+  URL.revokeObjectURL(url);
+  showToast('⬇️ Đã xuất file backup thành công!');
+}
+
+// ════════════════════════════════════════════════════
+//  IMPORT
+// ════════════════════════════════════════════════════
+function openImport() {
+  importPending = null;
+  document.getElementById('importInfo').classList.remove('show');
+  document.getElementById('importInfo').textContent = '';
+  document.getElementById('btnImport').disabled = true;
+  document.getElementById('fileInput').value = '';
+  document.getElementById('overlayImport').classList.add('show');
+}
+function closeImport()      { document.getElementById('overlayImport').classList.remove('show'); }
+function closeImportIfBg(e) { if (e.target === document.getElementById('overlayImport')) closeImport(); }
+
+function onDragOver(e)  { e.preventDefault(); document.getElementById('importDrop').classList.add('dragover'); }
+function onDragLeave(e) { document.getElementById('importDrop').classList.remove('dragover'); }
+function onDrop(e) {
+  e.preventDefault();
+  document.getElementById('importDrop').classList.remove('dragover');
+  const file = e.dataTransfer.files[0];
+  if (file) readImportFile(file);
+}
+function onFileSelected(e) {
+  const file = e.target.files[0];
+  if (file) readImportFile(file);
+}
+
+function readImportFile(file) {
+  const reader = new FileReader();
+  reader.onload = (e) => {
+    try {
+      const data = JSON.parse(e.target.result);
+      // Validate
+      if (!data.tasks || !Array.isArray(data.tasks)) throw new Error('File không hợp lệ');
+      const migrated = data.tasks.map(migrateTask);
+      // Tìm công việc mới (chưa có trong danh sách hiện tại)
+      const existingIds = new Set(tasks.map(t => t.id));
+      const newTasks = migrated.filter(t => !existingIds.has(t.id));
+      importPending = { tasks: migrated, newTasks, presets: data.presets || null };
+
+      const info = document.getElementById('importInfo');
+      info.innerHTML = `✅ File hợp lệ — <b>${migrated.length}</b> công việc trong file, <b>${newTasks.length}</b> việc mới sẽ được thêm vào${data.exportedAt ? ` (backup ngày ${new Date(data.exportedAt).toLocaleDateString('vi-VN')})` : ''}.`;
+      info.classList.add('show');
+      document.getElementById('btnImport').disabled = newTasks.length === 0;
+      if (newTasks.length === 0) info.innerHTML = 'ℹ️ Tất cả công việc trong file đã có trong danh sách hiện tại. Không có gì mới để nhập.';
+    } catch {
+      const info = document.getElementById('importInfo');
+      info.innerHTML = '❌ File không đúng định dạng. Vui lòng chọn file backup từ Nhắc Việc.';
+      info.classList.add('show');
+      info.style.background = '#FEF2F2';
+      info.style.borderColor = '#FECACA';
+      info.style.color = 'var(--red)';
+    }
+  };
+  reader.readAsText(file);
+}
+
+function doImport() {
+  if (!importPending || importPending.newTasks.length === 0) return;
+  // Gộp tasks mới vào
+  tasks = [...tasks, ...importPending.newTasks];
+  // Nếu file có presets và presets hiện tại vẫn là default → nhập luôn
+  if (importPending.presets && Array.isArray(importPending.presets)) {
+    const currentIsDefault = JSON.stringify(presets) === JSON.stringify(DEFAULT_PRESETS);
+    if (currentIsDefault) {
+      presets = importPending.presets;
+      savePresetsLS();
+      renderPresets();
+    }
+  }
+  saveTasks();
+  render();
+  closeImport();
+  showToast(`✅ Đã nhập ${importPending.newTasks.length} công việc từ backup!`);
+  importPending = null;
+}
+
+// ════════════════════════════════════════════════════
+//  RENDER TASKS
+// ════════════════════════════════════════════════════
 function render() {
   let list = tasks.map(t => ({ ...t, _dl: daysLeft(t.reminderDate) }));
   if (filterCat !== 'all') list = list.filter(t => t.cat === filterCat);
@@ -579,8 +937,7 @@ function render() {
           <div class="task-icon">${c.icon}</div>
           <div class="task-body">
             <div class="task-name-row">
-              <span class="task-name">${t.name}</span>
-              ${badge(dl)}
+              <span class="task-name">${t.name}</span>${badge(dl)}
             </div>
             <div class="task-meta">
               <span>📅 Thực hiện: <b>${fmt(t.doneDate)}</b></span>
@@ -606,9 +963,16 @@ function render() {
   const urgent = overdue + soon;
   document.getElementById('urgentCount').textContent = urgent;
   document.getElementById('urgentBadge').classList.toggle('show', urgent > 0);
+
+  // Hiện backup bar nếu có data và chưa dismiss
+  if (tasks.length > 0 && !localStorage.getItem(KEY_BAR)) {
+    document.getElementById('backupBar').style.display = 'flex';
+  }
 }
 
-// ── Render presets ───────────────────────────
+// ════════════════════════════════════════════════════
+//  RENDER PRESETS
+// ════════════════════════════════════════════════════
 function renderPresets() {
   document.getElementById('presetGrid').innerHTML = presets.map((p,i) => {
     const c = CATEGORIES[p.cat] || CATEGORIES.other;
@@ -620,11 +984,12 @@ function renderPresets() {
   }).join('');
 }
 
-// ── Filter & Sort ────────────────────────────
+// ════════════════════════════════════════════════════
+//  FILTER & SORT
+// ════════════════════════════════════════════════════
 function setFilter(btn, cat) {
   document.querySelectorAll('.pill[data-cat]').forEach(el => el.classList.remove('active'));
-  btn.classList.add('active');
-  filterCat = cat; render();
+  btn.classList.add('active'); filterCat = cat; render();
 }
 function setSort(mode) {
   sortMode = mode;
@@ -633,7 +998,9 @@ function setSort(mode) {
   render();
 }
 
-// ── Task Modal ───────────────────────────────
+// ════════════════════════════════════════════════════
+//  TASK MODAL
+// ════════════════════════════════════════════════════
 function openModal(preset) {
   editId = null;
   document.getElementById('modalTitle').textContent = '➕ Thêm công việc mới';
@@ -687,18 +1054,16 @@ function saveTask() {
   const interval = parseInt(document.getElementById('fInterval').value) || 30;
   const notes    = document.getElementById('fNotes').value.trim();
   const reminderDate = addDays(doneDate, interval);
-
   if (editId) {
     const idx = tasks.findIndex(t => t.id === editId);
-    if (idx > -1) tasks[idx] = { ...tasks[idx], name, cat, doneDate, interval, notes, reminderDate };
+    if (idx > -1) tasks[idx] = { ...tasks[idx], name, cat, doneDate, interval, notes, reminderDate, _v: SCHEMA_VERSION };
     showToast('✅ Đã cập nhật công việc');
   } else {
-    tasks.push({ id: crypto.randomUUID(), name, cat, doneDate, interval, notes, reminderDate });
+    tasks.push({ id: crypto.randomUUID(), name, cat, doneDate, interval, notes, reminderDate, _v: SCHEMA_VERSION });
     showToast('✅ Đã thêm công việc mới');
   }
   saveTasks(); render(); closeModal();
 }
-
 function markDone(id) {
   const idx = tasks.findIndex(t => t.id === id); if (idx < 0) return;
   const today = todayStr();
@@ -707,7 +1072,6 @@ function markDone(id) {
   saveTasks(); render();
   showToast('✓ Đã hoàn thành — lịch nhắc đã cập nhật!');
 }
-
 function deleteTask(id) {
   if (!confirm('Bạn có chắc muốn xoá công việc này?')) return;
   tasks = tasks.filter(t => t.id !== id);
@@ -715,7 +1079,9 @@ function deleteTask(id) {
   showToast('🗑 Đã xoá công việc');
 }
 
-// ── Preset Editor ────────────────────────────
+// ════════════════════════════════════════════════════
+//  PRESET EDITOR
+// ════════════════════════════════════════════════════
 function openPresetEditor() {
   renderPresetEditorList();
   document.getElementById('overlayPresets').classList.add('show');
@@ -733,18 +1099,12 @@ function renderPresetEditorList() {
     </div>`
   ).join('');
 }
-
 function addPresetRow() {
   presets.push({ name: '', cat: 'personal', interval: 30 });
   renderPresetEditorList();
   document.getElementById(`pname-${presets.length-1}`)?.focus();
 }
-
-function removePresetRow(i) {
-  presets.splice(i, 1);
-  renderPresetEditorList();
-}
-
+function removePresetRow(i) { presets.splice(i, 1); renderPresetEditorList(); }
 function savePresets() {
   const newPresets = [];
   let i = 0;
@@ -756,33 +1116,45 @@ function savePresets() {
     i++;
   }
   presets = newPresets;
-  savePresetsLS();
-  renderPresets();
-  closePresetEditor();
+  savePresetsLS(); renderPresets(); closePresetEditor();
   showToast('✅ Đã lưu danh sách mẫu việc');
 }
 
-// ── Toast ────────────────────────────────────
+// ════════════════════════════════════════════════════
+//  TOAST
+// ════════════════════════════════════════════════════
 let toastTimer;
 function showToast(msg) {
   const el = document.getElementById('toast');
-  el.textContent = msg;
-  el.classList.add('show');
+  el.textContent = msg; el.classList.add('show');
   clearTimeout(toastTimer);
   toastTimer = setTimeout(() => el.classList.remove('show'), 2800);
 }
 
-// ── Keyboard ─────────────────────────────────
+// ════════════════════════════════════════════════════
+//  KEYBOARD
+// ════════════════════════════════════════════════════
 document.addEventListener('keydown', e => {
-  if (e.key === 'Escape') { closeModal(); closePresetEditor(); }
+  if (e.key === 'Escape') { closeModal(); closePresetEditor(); closeImport(); }
   if ((e.ctrlKey || e.metaKey) && e.key === 'Enter') saveTask();
+  if (e.key === 'Enter' && document.getElementById('welcomeScreen').style.display !== 'none') startApp();
 });
 
-// ── Init ─────────────────────────────────────
+// ════════════════════════════════════════════════════
+//  INIT
+// ════════════════════════════════════════════════════
 load();
 applyFS();
 renderPresets();
 render();
+
+// Show welcome screen if no username saved yet
+if (!username) {
+  document.getElementById('welcomeScreen').style.display = 'flex';
+} else {
+  document.getElementById('welcomeScreen').style.display = 'none';
+  document.getElementById('headerUsername').textContent = username;
+}
 </script>
 </body>
 </html>
