@@ -1,0 +1,661 @@
+<!DOCTYPE html>
+<html lang="vi">
+<head>
+  <meta charset="UTF-8" />
+  <meta name="viewport" content="width=device-width, initial-scale=1.0" />
+  <title>Nhắc Việc — Quản lý công việc định kỳ</title>
+  <link rel="preconnect" href="https://fonts.googleapis.com" />
+  <link href="https://fonts.googleapis.com/css2?family=Be+Vietnam+Pro:wght@400;500;600;700;800&display=swap" rel="stylesheet" />
+  <style>
+    *, *::before, *::after { box-sizing: border-box; margin: 0; padding: 0; }
+
+    :root {
+      --bg: #0D0D1A;
+      --surface: #14142B;
+      --surface2: #1C1C38;
+      --border: #2A2A50;
+      --border2: #353560;
+      --text: #E4E4F4;
+      --text2: #8888B8;
+      --text3: #4A4A80;
+      --accent: #7C6EFF;
+      --accent2: #3ECFCF;
+      --red: #FF5F7E;
+      --orange: #FFA64D;
+      --green: #3DD68C;
+      --yellow: #FFD166;
+      --font: 'Be Vietnam Pro', system-ui, sans-serif;
+    }
+
+    body {
+      font-family: var(--font);
+      background: var(--bg);
+      color: var(--text);
+      min-height: 100vh;
+    }
+
+    /* ─── Scrollbar ─── */
+    ::-webkit-scrollbar { width: 5px; }
+    ::-webkit-scrollbar-track { background: transparent; }
+    ::-webkit-scrollbar-thumb { background: var(--border); border-radius: 4px; }
+
+    /* ─── Header ─── */
+    header {
+      position: sticky; top: 0; z-index: 200;
+      background: rgba(13,13,26,0.88);
+      backdrop-filter: blur(18px);
+      border-bottom: 1px solid var(--border);
+      padding: 14px 20px;
+    }
+    .header-inner {
+      max-width: 780px; margin: 0 auto;
+      display: flex; align-items: center; justify-content: space-between; gap: 12px;
+    }
+    .logo { display: flex; align-items: center; gap: 10px; }
+    .logo-icon {
+      width: 38px; height: 38px; border-radius: 12px;
+      background: linear-gradient(135deg, var(--accent), var(--accent2));
+      display: grid; place-items: center; font-size: 18px;
+      box-shadow: 0 4px 16px rgba(124,110,255,0.35);
+    }
+    .logo-text h1 { font-size: 18px; font-weight: 800; letter-spacing: -0.5px; }
+    .logo-text p { font-size: 11px; color: var(--text3); margin-top: 1px; }
+    .urgent-badge {
+      background: rgba(255,95,126,0.12);
+      color: var(--red);
+      border: 1px solid rgba(255,95,126,0.3);
+      border-radius: 20px; padding: 4px 12px;
+      font-size: 12px; font-weight: 700;
+      display: none;
+    }
+    .urgent-badge.show { display: inline-flex; align-items: center; gap: 5px; }
+    .btn-add {
+      background: linear-gradient(135deg, var(--accent), var(--accent2));
+      color: #fff; border: none; border-radius: 12px;
+      padding: 9px 18px; font-size: 14px; font-weight: 700;
+      cursor: pointer; font-family: var(--font);
+      box-shadow: 0 4px 16px rgba(124,110,255,0.3);
+      transition: opacity .2s, transform .15s;
+      white-space: nowrap;
+    }
+    .btn-add:hover { opacity: .88; transform: scale(1.03); }
+
+    /* ─── Main ─── */
+    main { max-width: 780px; margin: 0 auto; padding: 24px 16px 60px; }
+
+    /* ─── Stats ─── */
+    .stats {
+      display: grid; grid-template-columns: repeat(3,1fr); gap: 12px;
+      margin-bottom: 24px;
+    }
+    .stat-card {
+      background: var(--surface); border: 1px solid var(--border);
+      border-radius: 16px; padding: 16px;
+      animation: fadeUp .4s ease both;
+    }
+    .stat-value { font-size: 28px; font-weight: 800; line-height: 1; }
+    .stat-label { font-size: 11px; color: var(--text3); margin-top: 4px; text-transform: uppercase; letter-spacing: .5px; }
+
+    /* ─── Toolbar ─── */
+    .toolbar { display: flex; flex-wrap: wrap; gap: 8px; margin-bottom: 20px; }
+    .pill {
+      border: 1px solid var(--border); border-radius: 20px;
+      padding: 5px 14px; font-size: 13px; font-weight: 500;
+      cursor: pointer; background: transparent; color: var(--text2);
+      font-family: var(--font); transition: all .2s;
+    }
+    .pill:hover { border-color: var(--accent); color: var(--accent); }
+    .pill.active { background: rgba(124,110,255,.15); border-color: var(--accent); color: var(--accent); }
+    .sort-group { display: flex; gap: 6px; margin-left: auto; }
+
+    /* ─── Task list ─── */
+    #task-list { display: flex; flex-direction: column; gap: 10px; }
+
+    .task-card {
+      background: var(--surface);
+      border: 1px solid var(--border);
+      border-left: 4px solid #555;
+      border-radius: 14px; padding: 14px 16px;
+      display: flex; align-items: center; gap: 14px;
+      animation: fadeUp .3s ease both;
+      transition: transform .15s, box-shadow .15s;
+    }
+    .task-card:hover { transform: translateY(-2px); box-shadow: 0 8px 28px rgba(0,0,0,.4); }
+    .task-card.urgent { border-color: rgba(255,95,126,.35); box-shadow: 0 0 24px rgba(255,95,126,.08); }
+    .task-card.soon { border-color: rgba(255,209,102,.3); }
+
+    .task-icon { font-size: 26px; flex-shrink: 0; width: 38px; text-align: center; }
+    .task-body { flex: 1; min-width: 0; }
+    .task-name-row { display: flex; align-items: center; gap: 8px; flex-wrap: wrap; margin-bottom: 6px; }
+    .task-name { font-size: 15px; font-weight: 700; }
+    .task-meta { display: flex; gap: 14px; flex-wrap: wrap; }
+    .task-meta span { font-size: 12px; color: var(--text3); }
+    .task-meta span b { color: var(--text2); font-weight: 500; }
+    .task-notes { font-size: 12px; color: var(--text3); font-style: italic; margin-top: 5px; }
+    .task-actions { display: flex; gap: 4px; flex-shrink: 0; }
+    .icon-btn {
+      background: transparent; border: none; cursor: pointer;
+      font-size: 16px; padding: 7px; border-radius: 9px;
+      transition: background .15s; line-height: 1;
+    }
+    .icon-btn:hover { background: var(--surface2); }
+
+    /* ─── Status badge ─── */
+    .badge {
+      display: inline-flex; align-items: center;
+      border-radius: 20px; padding: 2px 10px;
+      font-size: 11px; font-weight: 700; white-space: nowrap;
+    }
+    .badge.red { background: rgba(255,95,126,.12); color: var(--red); border: 1px solid rgba(255,95,126,.3); }
+    .badge.orange { background: rgba(255,166,77,.12); color: var(--orange); border: 1px solid rgba(255,166,77,.3); }
+    .badge.yellow { background: rgba(255,209,102,.12); color: var(--yellow); border: 1px solid rgba(255,209,102,.3); }
+    .badge.green { background: rgba(61,214,140,.12); color: var(--green); border: 1px solid rgba(61,214,140,.3); }
+
+    /* ─── Empty ─── */
+    .empty {
+      text-align: center; padding: 70px 20px; color: var(--text3);
+      display: none;
+    }
+    .empty.show { display: block; }
+    .empty-icon { font-size: 52px; margin-bottom: 14px; }
+    .empty h3 { font-size: 16px; font-weight: 700; color: var(--text2); margin-bottom: 6px; }
+
+    /* ─── Presets ─── */
+    .presets-section { margin-top: 36px; border-top: 1px solid var(--border); padding-top: 22px; }
+    .section-title { font-size: 11px; font-weight: 700; color: var(--text3); text-transform: uppercase; letter-spacing: 1px; margin-bottom: 12px; }
+    .preset-grid { display: grid; grid-template-columns: repeat(auto-fill, minmax(155px,1fr)); gap: 8px; }
+    .preset-chip {
+      background: var(--surface); border: 1px solid var(--border);
+      border-radius: 12px; padding: 10px 14px;
+      cursor: pointer; text-align: left; font-family: var(--font);
+      transition: all .2s;
+    }
+    .preset-chip:hover { border-color: var(--accent); background: rgba(124,110,255,.08); }
+    .preset-chip .pname { font-size: 13px; font-weight: 600; color: var(--text); }
+    .preset-chip .pinfo { font-size: 11px; color: var(--text3); margin-top: 3px; }
+
+    /* ─── Modal ─── */
+    .overlay {
+      position: fixed; inset: 0; background: rgba(0,0,0,.7);
+      z-index: 500; display: none; align-items: center; justify-content: center;
+      padding: 16px; backdrop-filter: blur(4px);
+    }
+    .overlay.show { display: flex; }
+    .modal {
+      background: var(--surface); border: 1px solid var(--border2);
+      border-radius: 22px; padding: 28px; width: 100%; max-width: 480px;
+      box-shadow: 0 32px 80px rgba(0,0,0,.7);
+      animation: slideUp .25s ease;
+    }
+    .modal h2 { font-size: 18px; font-weight: 800; margin-bottom: 22px; }
+    .field { display: flex; flex-direction: column; gap: 6px; margin-bottom: 16px; }
+    .field label { font-size: 12px; color: var(--text3); font-weight: 600; text-transform: uppercase; letter-spacing: .4px; }
+    .field input, .field select, .field textarea {
+      background: var(--bg); border: 1px solid var(--border);
+      color: var(--text); border-radius: 11px;
+      padding: 10px 14px; font-size: 14px; font-family: var(--font);
+      outline: none; transition: border-color .2s; width: 100%;
+    }
+    .field input:focus, .field select:focus, .field textarea:focus { border-color: var(--accent); }
+    .field select option { background: #1A1A30; }
+    .field textarea { resize: vertical; min-height: 60px; }
+    .grid2 { display: grid; grid-template-columns: 1fr 1fr; gap: 12px; }
+    .preview-box {
+      background: var(--bg); border: 1px solid var(--border);
+      border-radius: 11px; padding: 11px 14px;
+      font-size: 13px; color: var(--text2); margin-bottom: 16px;
+      display: none;
+    }
+    .preview-box.show { display: block; }
+    .preview-box b { color: var(--accent2); }
+    .modal-footer { display: flex; gap: 10px; margin-top: 6px; }
+    .btn-cancel {
+      flex: 1; background: transparent; border: 1px solid var(--border);
+      color: var(--text2); border-radius: 11px; padding: 11px;
+      font-size: 14px; font-weight: 600; font-family: var(--font);
+      cursor: pointer; transition: all .2s;
+    }
+    .btn-cancel:hover { border-color: var(--border2); color: var(--text); }
+    .btn-save {
+      flex: 2; background: linear-gradient(135deg, var(--accent), var(--accent2));
+      border: none; color: #fff; border-radius: 11px; padding: 11px;
+      font-size: 14px; font-weight: 700; font-family: var(--font);
+      cursor: pointer; transition: opacity .2s;
+    }
+    .btn-save:hover { opacity: .88; }
+    .btn-save:disabled { opacity: .4; cursor: not-allowed; }
+
+    /* ─── Toast ─── */
+    .toast {
+      position: fixed; bottom: 24px; left: 50%; transform: translateX(-50%) translateY(80px);
+      background: var(--surface2); border: 1px solid var(--border2);
+      color: var(--text); border-radius: 20px; padding: 10px 20px;
+      font-size: 13px; font-weight: 600; z-index: 999;
+      transition: transform .3s ease, opacity .3s;
+      opacity: 0; white-space: nowrap;
+      box-shadow: 0 8px 32px rgba(0,0,0,.5);
+    }
+    .toast.show { transform: translateX(-50%) translateY(0); opacity: 1; }
+
+    /* ─── Animations ─── */
+    @keyframes fadeUp {
+      from { opacity: 0; transform: translateY(14px); }
+      to   { opacity: 1; transform: translateY(0); }
+    }
+    @keyframes slideUp {
+      from { opacity: 0; transform: translateY(28px); }
+      to   { opacity: 1; transform: translateY(0); }
+    }
+
+    /* ─── Responsive ─── */
+    @media (max-width: 480px) {
+      .stats { grid-template-columns: repeat(3,1fr); }
+      .stat-value { font-size: 22px; }
+      .task-meta { gap: 8px; }
+      .modal { padding: 22px 18px; }
+      .grid2 { grid-template-columns: 1fr; }
+    }
+  </style>
+</head>
+<body>
+
+<!-- ─── Header ─────────────────────────────── -->
+<header>
+  <div class="header-inner">
+    <div class="logo">
+      <div class="logo-icon">📋</div>
+      <div class="logo-text">
+        <h1>Nhắc Việc</h1>
+        <p>Quản lý công việc định kỳ</p>
+      </div>
+    </div>
+    <div style="display:flex;align-items:center;gap:10px">
+      <span class="urgent-badge" id="urgentBadge">⚡ <span id="urgentCount">0</span> cần làm</span>
+      <button class="btn-add" onclick="openModal()">+ Thêm việc</button>
+    </div>
+  </div>
+</header>
+
+<!-- ─── Main ────────────────────────────────── -->
+<main>
+  <!-- Stats -->
+  <div class="stats">
+    <div class="stat-card" style="animation-delay:.05s">
+      <div class="stat-value" id="statTotal" style="color:var(--accent)">0</div>
+      <div class="stat-label">Tổng việc</div>
+    </div>
+    <div class="stat-card" style="animation-delay:.1s">
+      <div class="stat-value" id="statSoon" style="color:var(--yellow)">0</div>
+      <div class="stat-label">Sắp tới ≤7 ngày</div>
+    </div>
+    <div class="stat-card" style="animation-delay:.15s">
+      <div class="stat-value" id="statOverdue" style="color:var(--red)">0</div>
+      <div class="stat-label">Đã trễ</div>
+    </div>
+  </div>
+
+  <!-- Toolbar -->
+  <div class="toolbar">
+    <button class="pill active" data-cat="all" onclick="setFilter(this,'all')">Tất cả</button>
+    <button class="pill" data-cat="personal" onclick="setFilter(this,'personal')">✂️ Cá nhân</button>
+    <button class="pill" data-cat="vehicle"  onclick="setFilter(this,'vehicle')">🚗 Xe cộ</button>
+    <button class="pill" data-cat="health"   onclick="setFilter(this,'health')">💊 Sức khoẻ</button>
+    <button class="pill" data-cat="home"     onclick="setFilter(this,'home')">🏠 Nhà cửa</button>
+    <button class="pill" data-cat="finance"  onclick="setFilter(this,'finance')">💰 Tài chính</button>
+    <button class="pill" data-cat="other"    onclick="setFilter(this,'other')">📌 Khác</button>
+    <div class="sort-group">
+      <button class="pill active" id="sortDays" onclick="setSort('days')">Gần nhất</button>
+      <button class="pill" id="sortName" onclick="setSort('name')">A→Z</button>
+    </div>
+  </div>
+
+  <!-- Task List -->
+  <div id="task-list"></div>
+  <div class="empty" id="emptyState">
+    <div class="empty-icon">✨</div>
+    <h3>Chưa có công việc nào</h3>
+    <p>Nhấn "+ Thêm việc" hoặc chọn từ danh sách mẫu bên dưới</p>
+  </div>
+
+  <!-- Presets -->
+  <div class="presets-section">
+    <div class="section-title">⚡ Thêm nhanh từ mẫu</div>
+    <div class="preset-grid" id="presetGrid"></div>
+  </div>
+</main>
+
+<!-- ─── Modal ───────────────────────────────── -->
+<div class="overlay" id="overlay" onclick="closeModalIfBg(event)">
+  <div class="modal">
+    <h2 id="modalTitle">➕ Thêm công việc mới</h2>
+    <div class="field">
+      <label>Tên công việc *</label>
+      <input id="fName" type="text" placeholder="VD: Cắt tóc, Thay dầu xe…" oninput="updatePreview()" />
+    </div>
+    <div class="field">
+      <label>Danh mục</label>
+      <select id="fCat">
+        <option value="personal">✂️ Cá nhân</option>
+        <option value="vehicle">🚗 Xe cộ</option>
+        <option value="health">💊 Sức khoẻ</option>
+        <option value="home">🏠 Nhà cửa</option>
+        <option value="finance">💰 Tài chính</option>
+        <option value="other">📌 Khác</option>
+      </select>
+    </div>
+    <div class="grid2">
+      <div class="field">
+        <label>Ngày thực hiện gần nhất</label>
+        <input id="fDate" type="date" oninput="updatePreview()" />
+      </div>
+      <div class="field">
+        <label>Chu kỳ nhắc (ngày)</label>
+        <input id="fInterval" type="number" min="1" placeholder="30" oninput="updatePreview()" />
+      </div>
+    </div>
+    <div class="preview-box" id="previewBox">
+      🔔 Nhắc lại vào: <b id="previewDate">—</b> &nbsp;·&nbsp; <span id="previewDays" style="color:var(--text3)"></span>
+    </div>
+    <div class="field">
+      <label>Ghi chú (tuỳ chọn)</label>
+      <textarea id="fNotes" placeholder="Thêm chi tiết nếu cần…"></textarea>
+    </div>
+    <div class="modal-footer">
+      <button class="btn-cancel" onclick="closeModal()">Huỷ</button>
+      <button class="btn-save" id="btnSave" onclick="saveTask()">Thêm công việc</button>
+    </div>
+  </div>
+</div>
+
+<!-- ─── Toast ───────────────────────────────── -->
+<div class="toast" id="toast"></div>
+
+<script>
+// ═══════════════════════════════════════════
+//  DATA
+// ═══════════════════════════════════════════
+const STORAGE_KEY = 'nhac-viec-v2';
+
+const CATEGORIES = {
+  personal: { label: 'Cá nhân',   icon: '✂️', color: '#A78BFA' },
+  vehicle:  { label: 'Xe cộ',     icon: '🚗', color: '#34D399' },
+  health:   { label: 'Sức khoẻ',  icon: '💊', color: '#60A5FA' },
+  home:     { label: 'Nhà cửa',   icon: '🏠', color: '#FB923C' },
+  finance:  { label: 'Tài chính', icon: '💰', color: '#FBBF24' },
+  other:    { label: 'Khác',      icon: '📌', color: '#E879F9' },
+};
+
+const PRESETS = [
+  { name: 'Cắt tóc',         cat: 'personal', interval: 30  },
+  { name: 'Thay dầu xe',     cat: 'vehicle',  interval: 90  },
+  { name: 'Bơm lốp xe',      cat: 'vehicle',  interval: 30  },
+  { name: 'Đăng kiểm xe',    cat: 'vehicle',  interval: 365 },
+  { name: 'Khám sức khoẻ',   cat: 'health',   interval: 180 },
+  { name: 'Uống vitamin',    cat: 'health',   interval: 30  },
+  { name: 'Vệ sinh máy lạnh',cat: 'home',     interval: 180 },
+  { name: 'Thay lọc nước',   cat: 'home',     interval: 180 },
+  { name: 'Nộp thuế',        cat: 'finance',  interval: 365 },
+  { name: 'Gia hạn bảo hiểm',cat: 'finance',  interval: 365 },
+];
+
+let tasks = [];
+let editId = null;
+let filterCat = 'all';
+let sortMode = 'days';
+
+function load() {
+  try { tasks = JSON.parse(localStorage.getItem(STORAGE_KEY)) || []; } catch { tasks = []; }
+}
+function save() {
+  localStorage.setItem(STORAGE_KEY, JSON.stringify(tasks));
+}
+
+// ═══════════════════════════════════════════
+//  HELPERS
+// ═══════════════════════════════════════════
+function todayStr() { return new Date().toISOString().slice(0,10); }
+
+function addDays(dateStr, n) {
+  const d = new Date(dateStr);
+  d.setDate(d.getDate() + Number(n));
+  return d.toISOString().slice(0,10);
+}
+
+function daysLeft(dateStr) {
+  if (!dateStr) return 999;
+  const today = new Date(); today.setHours(0,0,0,0);
+  const target = new Date(dateStr); target.setHours(0,0,0,0);
+  return Math.ceil((target - today) / 86400000);
+}
+
+function fmt(dateStr) {
+  if (!dateStr) return '—';
+  const d = new Date(dateStr);
+  return d.toLocaleDateString('vi-VN', { day:'2-digit', month:'2-digit', year:'numeric' });
+}
+
+function badge(dl) {
+  if (dl < 0)  return `<span class="badge red">Trễ ${Math.abs(dl)} ngày</span>`;
+  if (dl === 0) return `<span class="badge orange">Hôm nay!</span>`;
+  if (dl <= 3)  return `<span class="badge orange">${dl} ngày nữa</span>`;
+  if (dl <= 7)  return `<span class="badge yellow">${dl} ngày nữa</span>`;
+  return `<span class="badge green">${dl} ngày nữa</span>`;
+}
+
+// ═══════════════════════════════════════════
+//  RENDER
+// ═══════════════════════════════════════════
+function render() {
+  let list = tasks.map(t => ({ ...t, _dl: daysLeft(t.reminderDate) }));
+
+  // filter
+  if (filterCat !== 'all') list = list.filter(t => t.cat === filterCat);
+
+  // sort
+  if (sortMode === 'days') list.sort((a,b) => a._dl - b._dl);
+  else list.sort((a,b) => a.name.localeCompare(b.name, 'vi'));
+
+  const container = document.getElementById('task-list');
+  const empty = document.getElementById('emptyState');
+
+  if (list.length === 0) {
+    container.innerHTML = '';
+    empty.classList.add('show');
+  } else {
+    empty.classList.remove('show');
+    container.innerHTML = list.map(t => {
+      const c = CATEGORIES[t.cat] || CATEGORIES.other;
+      const dl = t._dl;
+      const cardClass = dl < 0 ? 'urgent' : (dl <= 7 ? 'soon' : '');
+      return `
+        <div class="task-card ${cardClass}" style="border-left-color:${c.color}" data-id="${t.id}">
+          <div class="task-icon">${c.icon}</div>
+          <div class="task-body">
+            <div class="task-name-row">
+              <span class="task-name">${t.name}</span>
+              ${badge(dl)}
+            </div>
+            <div class="task-meta">
+              <span>📅 Thực hiện: <b>${fmt(t.doneDate)}</b></span>
+              <span>🔔 Nhắc lại: <b>${fmt(t.reminderDate)}</b></span>
+              <span>🔁 Mỗi <b>${t.interval} ngày</b></span>
+            </div>
+            ${t.notes ? `<div class="task-notes">"${t.notes}"</div>` : ''}
+          </div>
+          <div class="task-actions">
+            <button class="icon-btn" title="Đã làm hôm nay ✓" onclick="markDone('${t.id}')" style="color:var(--green)">✓</button>
+            <button class="icon-btn" title="Chỉnh sửa" onclick="openEdit('${t.id}')">✏️</button>
+            <button class="icon-btn" title="Xoá" onclick="deleteTask('${t.id}')" style="color:var(--red)">🗑</button>
+          </div>
+        </div>`;
+    }).join('');
+  }
+
+  // stats
+  const all = tasks;
+  const overdue = all.filter(t => daysLeft(t.reminderDate) < 0).length;
+  const soon = all.filter(t => { const d = daysLeft(t.reminderDate); return d >= 0 && d <= 7; }).length;
+  document.getElementById('statTotal').textContent = all.length;
+  document.getElementById('statSoon').textContent = soon;
+  document.getElementById('statOverdue').textContent = overdue;
+
+  // urgent badge
+  const urgent = overdue + soon;
+  const ub = document.getElementById('urgentBadge');
+  document.getElementById('urgentCount').textContent = urgent;
+  ub.classList.toggle('show', urgent > 0);
+}
+
+function renderPresets() {
+  const grid = document.getElementById('presetGrid');
+  grid.innerHTML = PRESETS.map(p => {
+    const c = CATEGORIES[p.cat];
+    return `
+      <button class="preset-chip" onclick="openPreset(${JSON.stringify(p).replace(/"/g,'&quot;')})">
+        <div class="pname">${c.icon} ${p.name}</div>
+        <div class="pinfo">Mỗi ${p.interval} ngày</div>
+      </button>`;
+  }).join('');
+}
+
+// ═══════════════════════════════════════════
+//  FILTER & SORT
+// ═══════════════════════════════════════════
+function setFilter(btn, cat) {
+  document.querySelectorAll('.pill[data-cat]').forEach(el => el.classList.remove('active'));
+  btn.classList.add('active');
+  filterCat = cat;
+  render();
+}
+
+function setSort(mode) {
+  sortMode = mode;
+  document.getElementById('sortDays').classList.toggle('active', mode === 'days');
+  document.getElementById('sortName').classList.toggle('active', mode === 'name');
+  render();
+}
+
+// ═══════════════════════════════════════════
+//  MODAL
+// ═══════════════════════════════════════════
+function openModal(preset) {
+  editId = null;
+  document.getElementById('modalTitle').textContent = '➕ Thêm công việc mới';
+  document.getElementById('btnSave').textContent = 'Thêm công việc';
+  document.getElementById('fName').value = preset?.name || '';
+  document.getElementById('fCat').value  = preset?.cat  || 'personal';
+  document.getElementById('fDate').value = todayStr();
+  document.getElementById('fInterval').value = preset?.interval || 30;
+  document.getElementById('fNotes').value = '';
+  updatePreview();
+  document.getElementById('overlay').classList.add('show');
+  setTimeout(() => document.getElementById('fName').focus(), 50);
+}
+
+function openPreset(p) { openModal(p); }
+
+function openEdit(id) {
+  const t = tasks.find(x => x.id === id);
+  if (!t) return;
+  editId = id;
+  document.getElementById('modalTitle').textContent = '✏️ Chỉnh sửa công việc';
+  document.getElementById('btnSave').textContent = 'Lưu thay đổi';
+  document.getElementById('fName').value = t.name;
+  document.getElementById('fCat').value  = t.cat;
+  document.getElementById('fDate').value = t.doneDate;
+  document.getElementById('fInterval').value = t.interval;
+  document.getElementById('fNotes').value = t.notes || '';
+  updatePreview();
+  document.getElementById('overlay').classList.add('show');
+}
+
+function closeModal() { document.getElementById('overlay').classList.remove('show'); }
+function closeModalIfBg(e) { if (e.target === document.getElementById('overlay')) closeModal(); }
+
+function updatePreview() {
+  const name = document.getElementById('fName').value.trim();
+  const d    = document.getElementById('fDate').value;
+  const n    = document.getElementById('fInterval').value;
+  document.getElementById('btnSave').disabled = !name;
+
+  const box = document.getElementById('previewBox');
+  if (d && n) {
+    const rem = addDays(d, n);
+    const dl  = daysLeft(rem);
+    document.getElementById('previewDate').textContent = fmt(rem);
+    document.getElementById('previewDays').textContent =
+      dl < 0 ? `(đã qua ${Math.abs(dl)} ngày)` : dl === 0 ? '(hôm nay)' : `(${dl} ngày nữa)`;
+    box.classList.add('show');
+  } else {
+    box.classList.remove('show');
+  }
+}
+
+function saveTask() {
+  const name     = document.getElementById('fName').value.trim();
+  const cat      = document.getElementById('fCat').value;
+  const doneDate = document.getElementById('fDate').value;
+  const interval = parseInt(document.getElementById('fInterval').value) || 30;
+  const notes    = document.getElementById('fNotes').value.trim();
+  const reminderDate = addDays(doneDate, interval);
+
+  if (!name) return;
+
+  if (editId) {
+    const idx = tasks.findIndex(t => t.id === editId);
+    if (idx > -1) tasks[idx] = { ...tasks[idx], name, cat, doneDate, interval, notes, reminderDate };
+    showToast('✅ Đã cập nhật công việc');
+  } else {
+    tasks.push({ id: crypto.randomUUID(), name, cat, doneDate, interval, notes, reminderDate });
+    showToast('✅ Đã thêm công việc mới');
+  }
+
+  save(); render(); closeModal();
+}
+
+function markDone(id) {
+  const idx = tasks.findIndex(t => t.id === id);
+  if (idx < 0) return;
+  const today = todayStr();
+  tasks[idx].doneDate = today;
+  tasks[idx].reminderDate = addDays(today, tasks[idx].interval);
+  save(); render();
+  showToast('✓ Đã đánh dấu hoàn thành — lịch nhắc được cập nhật!');
+}
+
+function deleteTask(id) {
+  if (!confirm('Bạn có chắc muốn xoá công việc này?')) return;
+  tasks = tasks.filter(t => t.id !== id);
+  save(); render();
+  showToast('🗑 Đã xoá công việc');
+}
+
+// ═══════════════════════════════════════════
+//  TOAST
+// ═══════════════════════════════════════════
+let toastTimer;
+function showToast(msg) {
+  const el = document.getElementById('toast');
+  el.textContent = msg;
+  el.classList.add('show');
+  clearTimeout(toastTimer);
+  toastTimer = setTimeout(() => el.classList.remove('show'), 2800);
+}
+
+// ═══════════════════════════════════════════
+//  KEYBOARD
+// ═══════════════════════════════════════════
+document.addEventListener('keydown', e => {
+  if (e.key === 'Escape') closeModal();
+  if ((e.ctrlKey || e.metaKey) && e.key === 'Enter') saveTask();
+});
+
+// ═══════════════════════════════════════════
+//  INIT
+// ═══════════════════════════════════════════
+load();
+renderPresets();
+render();
+</script>
+</body>
+</html>
