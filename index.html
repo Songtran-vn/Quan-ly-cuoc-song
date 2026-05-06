@@ -475,18 +475,6 @@
     <h2>Nhắc Việc</h2>
     <p class="auth-subtitle">Đăng nhập để đồng bộ dữ liệu mọi thiết bị</p>
 
-    <!-- Firebase Config Notice — XOÁ SAU KHI ĐÃ CẤU HÌNH -->
-    <div class="config-notice" id="configNotice">
-      <b>⚙️ Cần cấu hình Firebase trước khi dùng</b>
-      Mở file <code>index.html</code>, tìm đoạn <code>FIREBASE_CONFIG</code> và thay bằng config của bạn:<br>
-      <ol>
-        <li>Vào <b>console.firebase.google.com</b></li>
-        <li>Tạo project → Add app → Web</li>
-        <li>Bật <b>Authentication</b> → Email/Password</li>
-        <li>Bật <b>Firestore Database</b></li>
-        <li>Sao chép firebaseConfig vào đây</li>
-      </ol>
-    </div>
 
     <div class="auth-tabs">
       <button class="auth-tab active" id="tabLogin"    onclick="switchTab('login')">Đăng nhập</button>
@@ -969,8 +957,6 @@ onAuthStateChanged(auth, user => {
   if (user) {
     currentUser = user;
     document.getElementById('authScreen').style.display = 'none';
-    document.getElementById('headerUsername').textContent = user.displayName || user.email.split('@')[0];
-    document.getElementById('configNotice').style.display = 'none';
     applyFS();
     listenTasks(user.uid);
     listenPresets(user.uid);
@@ -1318,12 +1304,6 @@ document.addEventListener('keydown', e => {
 //  INIT
 // ════════════════════════════════════════════════════
 applyFS();
-
-// Check if Firebase is properly configured
-const isConfigured = FIREBASE_CONFIG.apiKey !== 'THAY_API_KEY_CUA_BAN';
-if (!isConfigured) {
-  document.getElementById('configNotice').style.display = 'block';
-}
 </script>
 </body>
 </html>
