@@ -41,54 +41,104 @@
     ::-webkit-scrollbar-track { background: var(--bg2); }
     ::-webkit-scrollbar-thumb { background: var(--border2); border-radius: 4px; }
 
-    /* ══ WELCOME SCREEN ═════════════════════════════ */
-    #welcomeScreen {
+    /* ══ AUTH SCREEN ════════════════════════════════ */
+    #authScreen {
       position: fixed; inset: 0; z-index: 999;
       background: linear-gradient(135deg, #EEF2FF 0%, #F0F9FF 100%);
       display: flex; align-items: center; justify-content: center; padding: 20px;
     }
-    .welcome-card {
+    .auth-card {
       background: #fff; border: 1.5px solid var(--border2);
       border-radius: 24px; padding: 40px 36px; width: 100%; max-width: 400px;
       box-shadow: 0 24px 70px rgba(79,70,229,0.14);
       text-align: center; animation: slideUp .4s ease;
     }
-    .welcome-logo {
+    .auth-logo {
       width: 64px; height: 64px; border-radius: 18px;
       background: linear-gradient(135deg, var(--accent), var(--accent2));
       display: grid; place-items: center; font-size: 30px;
       margin: 0 auto 20px; box-shadow: 0 8px 24px rgba(79,70,229,0.28);
     }
-    .welcome-card h2 { font-size: 1.4em; font-weight: 800; color: var(--accent); margin-bottom: 6px; }
-    .welcome-card p  { font-size: 0.85em; color: var(--text3); margin-bottom: 28px; }
-    .welcome-field { text-align: left; margin-bottom: 20px; }
-    .welcome-field label { font-size: 0.75em; font-weight: 700; color: var(--text3); text-transform: uppercase; letter-spacing: .4px; display: block; margin-bottom: 7px; }
-    .welcome-field input {
+    .auth-card h2 { font-size: 1.4em; font-weight: 800; color: var(--accent); margin-bottom: 4px; }
+    .auth-card .auth-subtitle  { font-size: 0.85em; color: var(--text3); margin-bottom: 28px; }
+
+    .auth-tabs {
+      display: flex; gap: 0; margin-bottom: 24px;
+      background: var(--bg2); border-radius: 12px; padding: 4px;
+    }
+    .auth-tab {
+      flex: 1; padding: 9px; border: none; background: transparent;
+      font-family: var(--font); font-size: 0.88em; font-weight: 700;
+      color: var(--text3); border-radius: 9px; cursor: pointer; transition: all .2s;
+    }
+    .auth-tab.active { background: #fff; color: var(--accent); box-shadow: 0 2px 8px rgba(79,70,229,.1); }
+
+    .auth-field { text-align: left; margin-bottom: 16px; }
+    .auth-field label { font-size: 0.75em; font-weight: 700; color: var(--text3); text-transform: uppercase; letter-spacing: .4px; display: block; margin-bottom: 7px; }
+    .auth-field input {
       width: 100%; padding: 12px 16px; font-size: 1em; font-family: var(--font);
       background: var(--bg); border: 1.5px solid var(--border2);
       color: var(--text); border-radius: 12px; outline: none;
       transition: border-color .2s, box-shadow .2s;
     }
-    .welcome-field input:focus { border-color: var(--accent); box-shadow: 0 0 0 3px rgba(79,70,229,.1); }
-    .btn-welcome {
+    .auth-field input:focus { border-color: var(--accent); box-shadow: 0 0 0 3px rgba(79,70,229,.1); }
+
+    .btn-auth {
       width: 100%; padding: 13px; font-size: 1em; font-weight: 700;
       font-family: var(--font); border: none; border-radius: 13px; cursor: pointer;
       background: linear-gradient(135deg, var(--accent), var(--accent2));
       color: #fff; box-shadow: 0 4px 16px rgba(79,70,229,.28);
-      transition: opacity .2s, transform .15s;
+      transition: opacity .2s, transform .15s; margin-top: 4px;
     }
-    .btn-welcome:hover { opacity: .88; transform: scale(1.02); }
-    .btn-welcome:disabled { opacity: .35; cursor: not-allowed; transform: none; }
+    .btn-auth:hover { opacity: .88; transform: scale(1.02); }
+    .btn-auth:disabled { opacity: .35; cursor: not-allowed; transform: none; }
 
-    /* username chip in header */
+    .auth-error {
+      background: #FEF2F2; border: 1.5px solid #FECACA;
+      border-radius: 10px; padding: 10px 14px;
+      font-size: 0.82em; color: var(--red); margin-bottom: 14px; display: none; text-align: left;
+    }
+    .auth-error.show { display: block; }
+    .auth-loading { font-size: 0.82em; color: var(--text3); margin-top: 12px; display: none; }
+    .auth-loading.show { display: block; }
+
+    /* firebase config notice */
+    .config-notice {
+      background: #FFFBEB; border: 1.5px solid #FDE68A;
+      border-radius: 14px; padding: 18px; margin-bottom: 20px;
+      text-align: left; font-size: 0.82em; color: #92400E;
+    }
+    .config-notice b { color: #D97706; display: block; margin-bottom: 6px; font-size: 1em; }
+    .config-notice code {
+      background: #FEF3C7; border-radius: 6px; padding: 2px 6px;
+      font-size: 0.92em; font-family: monospace;
+    }
+    .config-notice ol { margin: 10px 0 0 16px; line-height: 1.9; }
+
+    /* user chip in header */
     .user-chip {
       display: flex; align-items: center; gap: 6px;
       background: var(--bg2); border: 1.5px solid var(--border);
       border-radius: 20px; padding: 5px 12px;
       font-size: 0.78em; font-weight: 700; color: var(--text2);
-      cursor: pointer; transition: all .18s;
     }
-    .user-chip:hover { border-color: var(--accent); color: var(--accent); }
+    .btn-signout {
+      display: flex; align-items: center; gap: 5px;
+      background: #FEF2F2; border: 1.5px solid #FECACA;
+      color: var(--red); border-radius: 10px;
+      padding: 6px 12px; font-size: 0.78em; font-weight: 700;
+      cursor: pointer; font-family: var(--font); transition: all .18s; white-space: nowrap;
+    }
+    .btn-signout:hover { background: var(--red); color: #fff; border-color: var(--red); }
+
+    /* sync indicator */
+    .sync-dot {
+      width: 8px; height: 8px; border-radius: 50%; background: var(--green);
+      box-shadow: 0 0 0 2px #dcfce7; display: inline-block; margin-right: 2px;
+    }
+    .sync-dot.syncing { background: var(--yellow); box-shadow: 0 0 0 2px #fef9c3; animation: pulse 1s infinite; }
+    .sync-dot.error   { background: var(--red);   box-shadow: 0 0 0 2px #fee2e2; }
+    @keyframes pulse { 0%,100%{opacity:1} 50%{opacity:.4} }
 
     /* ══ HEADER ══════════════════════════════════════ */
     header {
@@ -139,7 +189,6 @@
       border-left: 1px solid var(--border); border-right: 1px solid var(--border);
     }
 
-    /* Backup buttons */
     .btn-backup {
       display: flex; align-items: center; gap: 5px;
       background: var(--bg2); border: 1.5px solid var(--border2);
@@ -393,7 +442,7 @@
       transform: translateX(-50%) translateY(70px);
       background: var(--text); color: #fff;
       border-radius: 20px; padding: 10px 22px;
-      font-size: 0.82em; font-weight: 600; z-index: 999;
+      font-size: 0.82em; font-weight: 600; z-index: 9999;
       transition: transform .3s ease, opacity .3s;
       opacity: 0; white-space: nowrap;
       box-shadow: 0 8px 28px rgba(0,0,0,.16);
@@ -419,21 +468,52 @@
 </head>
 <body>
 
-<!-- ══ WELCOME SCREEN ════════════════════════════ -->
-<div id="welcomeScreen">
-  <div class="welcome-card">
-    <div class="welcome-logo">📋</div>
+<!-- ══ AUTH SCREEN ════════════════════════════════ -->
+<div id="authScreen">
+  <div class="auth-card">
+    <div class="auth-logo">📋</div>
     <h2>Nhắc Việc</h2>
-    <p>Ứng dụng quản lý công việc định kỳ trong cuộc sống</p>
-    <div class="welcome-field">
-      <label>Tên của bạn là gì?</label>
-      <input id="inputUsername" type="text" placeholder="VD: Nguyễn Văn A…"
-             oninput="document.getElementById('btnStartApp').disabled=!this.value.trim()"
-             onkeydown="if(event.key==='Enter')startApp()" autofocus />
+    <p class="auth-subtitle">Đăng nhập để đồng bộ dữ liệu mọi thiết bị</p>
+
+    <!-- Firebase Config Notice — XOÁ SAU KHI ĐÃ CẤU HÌNH -->
+    <div class="config-notice" id="configNotice">
+      <b>⚙️ Cần cấu hình Firebase trước khi dùng</b>
+      Mở file <code>index.html</code>, tìm đoạn <code>FIREBASE_CONFIG</code> và thay bằng config của bạn:<br>
+      <ol>
+        <li>Vào <b>console.firebase.google.com</b></li>
+        <li>Tạo project → Add app → Web</li>
+        <li>Bật <b>Authentication</b> → Email/Password</li>
+        <li>Bật <b>Firestore Database</b></li>
+        <li>Sao chép firebaseConfig vào đây</li>
+      </ol>
     </div>
-    <button class="btn-welcome" id="btnStartApp" onclick="startApp()" disabled>
-      Bắt đầu sử dụng →
-    </button>
+
+    <div class="auth-tabs">
+      <button class="auth-tab active" id="tabLogin"    onclick="switchTab('login')">Đăng nhập</button>
+      <button class="auth-tab"        id="tabRegister" onclick="switchTab('register')">Đăng ký</button>
+    </div>
+
+    <div class="auth-error" id="authError"></div>
+
+    <div class="auth-field">
+      <label>Email</label>
+      <input id="authEmail" type="email" placeholder="example@gmail.com" autocomplete="email" />
+    </div>
+    <div class="auth-field">
+      <label>Mật khẩu</label>
+      <input id="authPassword" type="password" placeholder="Ít nhất 6 ký tự" autocomplete="current-password" />
+    </div>
+    <div class="auth-field" id="fieldDisplayName" style="display:none">
+      <label>Tên hiển thị</label>
+      <input id="authDisplayName" type="text" placeholder="VD: Nguyễn Văn A" />
+    </div>
+
+    <button class="btn-auth" id="btnAuth" onclick="handleAuth()">Đăng nhập</button>
+    <div class="auth-loading" id="authLoading">⏳ Đang xử lý…</div>
+
+    <div style="margin-top:14px; font-size:0.8em; color:var(--text3)">
+      <span id="forgotLink" style="cursor:pointer;text-decoration:underline;color:var(--accent)" onclick="handleForgotPassword()">Quên mật khẩu?</span>
+    </div>
   </div>
 </div>
 
@@ -450,18 +530,21 @@
     <div class="header-right">
       <span class="urgent-badge" id="urgentBadge">⚡ <span id="urgentCount">0</span> cần làm</span>
 
-      <!-- User chip -->
-      <span class="user-chip" onclick="editUsername()" title="Đổi tên">👤 <span id="headerUsername"></span></span>
+      <!-- Sync + User -->
+      <span class="user-chip" title="Đã đăng nhập">
+        <span class="sync-dot" id="syncDot"></span>
+        👤 <span id="headerUsername"></span>
+      </span>
+
       <div class="fs-controls" title="Điều chỉnh cỡ chữ">
         <button class="fs-btn" onclick="changeFS(-1)">A−</button>
         <span class="fs-label" id="fsLabel">15</span>
         <button class="fs-btn" onclick="changeFS(1)">A+</button>
       </div>
 
-      <!-- Backup buttons -->
       <button class="btn-backup" onclick="exportData()" title="Xuất dữ liệu ra file JSON">⬇️ Xuất</button>
       <button class="btn-backup" onclick="openImport()" title="Nhập dữ liệu từ file JSON">⬆️ Nhập</button>
-
+      <button class="btn-signout" onclick="signOut()" title="Đăng xuất">🚪 Thoát</button>
       <button class="btn-add" onclick="openModal()">+ Thêm việc</button>
     </div>
   </div>
@@ -469,11 +552,9 @@
 
 <!-- ══ MAIN ══════════════════════════════════════ -->
 <main>
-
-  <!-- Backup notice bar -->
   <div class="backup-bar" id="backupBar" style="display:none">
     <div class="backup-bar-text">
-      💾 <b>Mẹo bảo vệ dữ liệu:</b> Xuất file backup định kỳ để không mất dữ liệu khi nâng cấp app.
+      💾 <b>Mẹo:</b> Dữ liệu đã được lưu cloud. Bạn có thể xuất file backup thêm để an toàn hơn.
     </div>
     <div class="backup-bar-actions">
       <button class="btn-sm export" onclick="exportData()">⬇️ Xuất ngay</button>
@@ -481,7 +562,6 @@
     </div>
   </div>
 
-  <!-- Stats -->
   <div class="stats">
     <div class="stat-card" style="animation-delay:.05s">
       <div class="stat-value" id="statTotal" style="color:var(--accent)">0</div>
@@ -497,7 +577,6 @@
     </div>
   </div>
 
-  <!-- Toolbar -->
   <div class="toolbar">
     <button class="pill active" data-cat="all"      onclick="setFilter(this,'all')">Tất cả</button>
     <button class="pill" data-cat="personal" onclick="setFilter(this,'personal')">✂️ Cá nhân</button>
@@ -512,7 +591,6 @@
     </div>
   </div>
 
-  <!-- Task list -->
   <div id="task-list"></div>
   <div class="empty" id="emptyState">
     <div class="empty-icon">✨</div>
@@ -520,7 +598,6 @@
     <p>Nhấn "+ Thêm việc" hoặc chọn nhanh từ mẫu bên dưới</p>
   </div>
 
-  <!-- Presets -->
   <div class="presets-section">
     <div class="section-header">
       <div class="section-title">⚡ Thêm nhanh từ mẫu</div>
@@ -586,7 +663,7 @@
 <div class="overlay" id="overlayPresets" onclick="closePEIfBg(event)">
   <div class="modal" style="max-width:560px">
     <h2>✏️ Sửa danh sách mẫu việc</h2>
-    <p style="font-size:.82em;color:var(--text3);margin-bottom:14px">Tuỳ chỉnh tên, danh mục và chu kỳ. Thay đổi được lưu lại vào trình duyệt.</p>
+    <p style="font-size:.82em;color:var(--text3);margin-bottom:14px">Tuỳ chỉnh tên, danh mục và chu kỳ. Mẫu được lưu riêng theo tài khoản.</p>
     <div class="preset-editor-list" id="presetEditorList"></div>
     <button class="btn-add-preset" onclick="addPresetRow()">+ Thêm mẫu mới</button>
     <div class="modal-footer">
@@ -600,7 +677,6 @@
 <div class="overlay" id="overlayImport" onclick="closeImportIfBg(event)">
   <div class="modal" style="max-width:480px">
     <h2>⬆️ Nhập dữ liệu từ backup</h2>
-
     <div class="import-drop" id="importDrop"
          onclick="document.getElementById('fileInput').click()"
          ondragover="onDragOver(event)" ondragleave="onDragLeave(event)" ondrop="onDrop(event)">
@@ -609,13 +685,10 @@
       <small>File .json được xuất từ Nhắc Việc</small>
     </div>
     <input type="file" id="fileInput" accept=".json" style="display:none" onchange="onFileSelected(event)" />
-
     <div class="import-info" id="importInfo"></div>
-
     <div class="import-warn">
-      ⚠️ <b>Lưu ý:</b> Nhập sẽ <b>gộp</b> dữ liệu backup vào danh sách hiện tại (không xoá việc cũ). Công việc trùng ID sẽ được bỏ qua.
+      ⚠️ <b>Lưu ý:</b> Nhập sẽ <b>gộp</b> dữ liệu backup vào danh sách hiện tại. Công việc trùng ID sẽ được bỏ qua.
     </div>
-
     <div class="modal-footer">
       <button class="btn-cancel" onclick="closeImport()">Huỷ</button>
       <button class="btn-save" id="btnImport" onclick="doImport()" disabled>⬆️ Nhập dữ liệu</button>
@@ -626,21 +699,45 @@
 <!-- ══ TOAST ══════════════════════════════════════ -->
 <div class="toast" id="toast"></div>
 
-<!-- hidden file input trigger -->
-<script>
+<!-- ══ FIREBASE SDK ═══════════════════════════════ -->
+<script type="module">
 // ════════════════════════════════════════════════════
-//  STORAGE KEYS — CỐ ĐỊNH, KHÔNG BAO GIỜ THAY ĐỔI
-//  Dù app nâng cấp bao nhiêu lần, key này luôn giữ
-//  nguyên để dữ liệu người dùng không bị mất.
+//  🔧 FIREBASE CONFIG — THAY BẰNG CONFIG CỦA BẠN
+//  Lấy từ: Firebase Console → Project Settings → Your apps
 // ════════════════════════════════════════════════════
-const KEY_TASKS   = 'nhac-viec-tasks';    // ← cố định vĩnh viễn
-const KEY_PRESETS = 'nhac-viec-presets';  // ← cố định vĩnh viễn
-const KEY_FS      = 'nhac-viec-fs';       // ← cố định vĩnh viễn
-const KEY_USER    = 'nhac-viec-user';     // ← cố định vĩnh viễn
-const KEY_BAR     = 'nhac-viec-bar-dismissed';
+const FIREBASE_CONFIG = {
+  apiKey:            "AIzaSyA8b-_m_J1mLFr6An5wxf3DFonaS1EpXCM",
+  authDomain:        "quan-ly-cuoc-song.firebaseapp.com",
+  projectId:         "quan-ly-cuoc-song",
+  storageBucket:     "quan-ly-cuoc-song.firebasestorage.app",
+  messagingSenderId: "410502501655",
+  appId:             "1:410502501655:web:71bcf18a16d278c6449352",
+  measurementId:     "G-J3TF2648NR"
+};
 
-// Schema version — dùng để migration khi cấu trúc data thay đổi
+// ════════════════════════════════════════════════════
+//  IMPORTS
+// ════════════════════════════════════════════════════
+import { initializeApp }                                          from 'https://www.gstatic.com/firebasejs/10.12.2/firebase-app.js';
+import { getAuth, createUserWithEmailAndPassword, signInWithEmailAndPassword,
+         onAuthStateChanged, signOut as fbSignOut, updateProfile,
+         sendPasswordResetEmail }                                 from 'https://www.gstatic.com/firebasejs/10.12.2/firebase-auth.js';
+import { getFirestore, doc, collection, setDoc, getDoc,
+         onSnapshot, deleteDoc, writeBatch }                      from 'https://www.gstatic.com/firebasejs/10.12.2/firebase-firestore.js';
+
+// ════════════════════════════════════════════════════
+//  INIT FIREBASE
+// ════════════════════════════════════════════════════
+const app  = initializeApp(FIREBASE_CONFIG);
+const auth = getAuth(app);
+const db   = getFirestore(app);
+
+// ════════════════════════════════════════════════════
+//  CONSTANTS
+// ════════════════════════════════════════════════════
 const SCHEMA_VERSION = 1;
+const KEY_FS  = 'nhac-viec-fs';
+const KEY_BAR = 'nhac-viec-bar-dismissed';
 
 const CATEGORIES = {
   personal: { label: 'Cá nhân',   icon: '✂️', color: '#7C3AED' },
@@ -664,129 +761,27 @@ const DEFAULT_PRESETS = [
   { name: 'Gia hạn bảo hiểm',  cat: 'finance',  interval: 365 },
 ];
 
-let tasks    = [];
-let presets  = [];
-let editId   = null;
-let filterCat = 'all';
-let sortMode  = 'days';
-let fontSize  = 15;
-let username  = '';
-let importPending = null; // data chờ import
-
 // ════════════════════════════════════════════════════
-//  MIGRATION — chạy khi load, chuyển data cũ → mới
+//  STATE
 // ════════════════════════════════════════════════════
-function migrateTask(t) {
-  // v1: đảm bảo có đủ các trường cần thiết
-  return {
-    id:           t.id           || crypto.randomUUID(),
-    name:         t.name         || '(Không tên)',
-    cat:          t.cat          || t.category || 'other',   // hỗ trợ key cũ "category"
-    doneDate:     t.doneDate     || t.done_date || todayStr(),
-    interval:     Number(t.interval || t.intervalDays || 30), // hỗ trợ key cũ "intervalDays"
-    notes:        t.notes        || '',
-    reminderDate: t.reminderDate || t.reminder_date || addDays(t.doneDate || todayStr(), t.interval || 30),
-    _v: SCHEMA_VERSION,
-  };
-}
-
-// ════════════════════════════════════════════════════
-//  LOAD / SAVE
-// ════════════════════════════════════════════════════
-function load() {
-  // Tasks
-  try {
-    const raw = JSON.parse(localStorage.getItem(KEY_TASKS));
-    if (Array.isArray(raw)) {
-      tasks = raw.map(migrateTask); // migration tự động
-    } else {
-      // Thử đọc key cũ (v2, v3) nếu có — giúp người dùng cũ không mất data
-      const legacyKeys = ['nhac-viec-v3', 'nhac-viec-v2'];
-      for (const lk of legacyKeys) {
-        const legacy = JSON.parse(localStorage.getItem(lk));
-        if (Array.isArray(legacy) && legacy.length > 0) {
-          tasks = legacy.map(migrateTask);
-          saveTasks(); // lưu lại vào key chuẩn
-          localStorage.removeItem(lk); // xoá key cũ
-          showToast('✅ Đã chuyển dữ liệu cũ sang phiên bản mới!');
-          break;
-        }
-      }
-    }
-  } catch { tasks = []; }
-
-  // Presets
-  try {
-    const raw = JSON.parse(localStorage.getItem(KEY_PRESETS));
-    presets = Array.isArray(raw) && raw.length > 0 ? raw : DEFAULT_PRESETS;
-  } catch { presets = DEFAULT_PRESETS; }
-
-  // Font size
-  try { fontSize = parseInt(localStorage.getItem(KEY_FS)) || 15; } catch {}
-
-  // Username
-  try { username = localStorage.getItem(KEY_USER) || ''; } catch {}
-
-  // Backup bar
-  const dismissed = localStorage.getItem(KEY_BAR);
-  if (!dismissed && tasks.length > 0) {
-    document.getElementById('backupBar').style.display = 'flex';
-  }
-}
-
-function saveTasks()    { localStorage.setItem(KEY_TASKS,   JSON.stringify(tasks)); }
-function savePresetsLS(){ localStorage.setItem(KEY_PRESETS, JSON.stringify(presets)); }
-
-// ════════════════════════════════════════════════════
-//  MODULE: USER
-// ════════════════════════════════════════════════════
-function startApp() {
-  const val = document.getElementById('inputUsername').value.trim();
-  if (!val) return;
-  username = val;
-  localStorage.setItem(KEY_USER, username);
-  document.getElementById('welcomeScreen').style.display = 'none';
-  document.getElementById('headerUsername').textContent = username;
-}
-
-function editUsername() {
-  const newName = prompt('Đổi tên của bạn:', username);
-  if (newName && newName.trim()) {
-    username = newName.trim();
-    localStorage.setItem(KEY_USER, username);
-    document.getElementById('headerUsername').textContent = username;
-    showToast('✅ Đã cập nhật tên: ' + username);
-  }
-}
-
-// ════════════════════════════════════════════════════
-//  FONT SIZE
-// ════════════════════════════════════════════════════
-function applyFS() {
-  document.body.style.fontSize = fontSize + 'px';
-  document.getElementById('fsLabel').textContent = fontSize;
-}
-function changeFS(delta) {
-  fontSize = Math.min(22, Math.max(11, fontSize + delta));
-  applyFS();
-  localStorage.setItem(KEY_FS, fontSize);
-}
-
-// ════════════════════════════════════════════════════
-//  BACKUP BAR
-// ════════════════════════════════════════════════════
-function dismissBar() {
-  document.getElementById('backupBar').style.display = 'none';
-  localStorage.setItem(KEY_BAR, '1');
-}
+let tasks         = [];
+let presets       = [];
+let editId        = null;
+let filterCat     = 'all';
+let sortMode      = 'days';
+let fontSize      = parseInt(localStorage.getItem(KEY_FS)) || 15;
+let currentUser   = null;
+let importPending = null;
+let unsubscribeTasks    = null;
+let unsubscribePresets  = null;
+let authMode      = 'login'; // 'login' | 'register'
 
 // ════════════════════════════════════════════════════
 //  HELPERS
 // ════════════════════════════════════════════════════
 function todayStr() { return new Date().toISOString().slice(0,10); }
 function addDays(dateStr, n) {
-  const d = new Date(dateStr);
-  d.setDate(d.getDate() + Number(n));
+  const d = new Date(dateStr); d.setDate(d.getDate() + Number(n));
   return d.toISOString().slice(0,10);
 }
 function daysLeft(dateStr) {
@@ -811,105 +806,299 @@ function catOpts(selected='personal') {
     `<option value="${k}"${k===selected?' selected':''}>${v.icon} ${v.label}</option>`
   ).join('');
 }
-
-// ════════════════════════════════════════════════════
-//  EXPORT
-// ════════════════════════════════════════════════════
-function exportData() {
-  const payload = {
-    app:       'nhac-viec',
-    version:   SCHEMA_VERSION,
-    exportedAt: new Date().toISOString(),
-    tasks,
-    presets,
+function migrateTask(t) {
+  return {
+    id:           t.id           || crypto.randomUUID(),
+    name:         t.name         || '(Không tên)',
+    cat:          t.cat          || t.category || 'other',
+    doneDate:     t.doneDate     || t.done_date || todayStr(),
+    interval:     Number(t.interval || t.intervalDays || 30),
+    notes:        t.notes        || '',
+    reminderDate: t.reminderDate || t.reminder_date || addDays(t.doneDate || todayStr(), t.interval || 30),
+    _v: SCHEMA_VERSION,
   };
-  const blob = new Blob([JSON.stringify(payload, null, 2)], { type: 'application/json' });
-  const url  = URL.createObjectURL(blob);
-  const a    = document.createElement('a');
-  const date = new Date().toLocaleDateString('vi-VN').replace(/\//g,'-');
-  a.href     = url;
-  a.download = `nhac-viec-backup-${date}.json`;
-  a.click();
-  URL.revokeObjectURL(url);
-  showToast('⬇️ Đã xuất file backup thành công!');
+}
+function setSyncStatus(status) {
+  const dot = document.getElementById('syncDot');
+  if (!dot) return;
+  dot.className = 'sync-dot' + (status === 'syncing' ? ' syncing' : status === 'error' ? ' error' : '');
+  dot.title = status === 'syncing' ? 'Đang đồng bộ…' : status === 'error' ? 'Lỗi đồng bộ' : 'Đã đồng bộ';
 }
 
 // ════════════════════════════════════════════════════
-//  IMPORT
+//  AUTH UI
 // ════════════════════════════════════════════════════
-function openImport() {
-  importPending = null;
-  document.getElementById('importInfo').classList.remove('show');
-  document.getElementById('importInfo').textContent = '';
-  document.getElementById('btnImport').disabled = true;
-  document.getElementById('fileInput').value = '';
-  document.getElementById('overlayImport').classList.add('show');
-}
-function closeImport()      { document.getElementById('overlayImport').classList.remove('show'); }
-function closeImportIfBg(e) { if (e.target === document.getElementById('overlayImport')) closeImport(); }
+window.switchTab = function(mode) {
+  authMode = mode;
+  document.getElementById('tabLogin').classList.toggle('active', mode === 'login');
+  document.getElementById('tabRegister').classList.toggle('active', mode === 'register');
+  document.getElementById('btnAuth').textContent = mode === 'login' ? 'Đăng nhập' : 'Tạo tài khoản';
+  document.getElementById('fieldDisplayName').style.display = mode === 'register' ? 'block' : 'none';
+  document.getElementById('forgotLink').style.display = mode === 'login' ? 'inline' : 'none';
+  document.getElementById('authError').classList.remove('show');
+};
 
-function onDragOver(e)  { e.preventDefault(); document.getElementById('importDrop').classList.add('dragover'); }
-function onDragLeave(e) { document.getElementById('importDrop').classList.remove('dragover'); }
-function onDrop(e) {
-  e.preventDefault();
-  document.getElementById('importDrop').classList.remove('dragover');
-  const file = e.dataTransfer.files[0];
-  if (file) readImportFile(file);
+function showAuthError(msg) {
+  const el = document.getElementById('authError');
+  el.textContent = msg; el.classList.add('show');
 }
-function onFileSelected(e) {
-  const file = e.target.files[0];
-  if (file) readImportFile(file);
+function setAuthLoading(on) {
+  document.getElementById('btnAuth').disabled = on;
+  document.getElementById('authLoading').classList.toggle('show', on);
 }
 
-function readImportFile(file) {
-  const reader = new FileReader();
-  reader.onload = (e) => {
-    try {
-      const data = JSON.parse(e.target.result);
-      // Validate
-      if (!data.tasks || !Array.isArray(data.tasks)) throw new Error('File không hợp lệ');
-      const migrated = data.tasks.map(migrateTask);
-      // Tìm công việc mới (chưa có trong danh sách hiện tại)
-      const existingIds = new Set(tasks.map(t => t.id));
-      const newTasks = migrated.filter(t => !existingIds.has(t.id));
-      importPending = { tasks: migrated, newTasks, presets: data.presets || null };
-
-      const info = document.getElementById('importInfo');
-      info.innerHTML = `✅ File hợp lệ — <b>${migrated.length}</b> công việc trong file, <b>${newTasks.length}</b> việc mới sẽ được thêm vào${data.exportedAt ? ` (backup ngày ${new Date(data.exportedAt).toLocaleDateString('vi-VN')})` : ''}.`;
-      info.classList.add('show');
-      document.getElementById('btnImport').disabled = newTasks.length === 0;
-      if (newTasks.length === 0) info.innerHTML = 'ℹ️ Tất cả công việc trong file đã có trong danh sách hiện tại. Không có gì mới để nhập.';
-    } catch {
-      const info = document.getElementById('importInfo');
-      info.innerHTML = '❌ File không đúng định dạng. Vui lòng chọn file backup từ Nhắc Việc.';
-      info.classList.add('show');
-      info.style.background = '#FEF2F2';
-      info.style.borderColor = '#FECACA';
-      info.style.color = 'var(--red)';
-    }
+function firebaseErrorToVi(code) {
+  const map = {
+    'auth/invalid-email':          '❌ Email không hợp lệ.',
+    'auth/user-disabled':          '❌ Tài khoản đã bị khoá.',
+    'auth/user-not-found':         '❌ Không tìm thấy tài khoản với email này.',
+    'auth/wrong-password':         '❌ Mật khẩu không đúng.',
+    'auth/email-already-in-use':   '❌ Email này đã được đăng ký.',
+    'auth/weak-password':          '❌ Mật khẩu quá yếu (ít nhất 6 ký tự).',
+    'auth/too-many-requests':      '⏳ Quá nhiều lần thử, vui lòng thử lại sau.',
+    'auth/network-request-failed': '🌐 Lỗi mạng, kiểm tra kết nối internet.',
+    'auth/invalid-credential':     '❌ Email hoặc mật khẩu không đúng.',
   };
-  reader.readAsText(file);
+  return map[code] || `❌ Lỗi: ${code}`;
 }
 
-function doImport() {
-  if (!importPending || importPending.newTasks.length === 0) return;
-  // Gộp tasks mới vào
-  tasks = [...tasks, ...importPending.newTasks];
-  // Nếu file có presets và presets hiện tại vẫn là default → nhập luôn
-  if (importPending.presets && Array.isArray(importPending.presets)) {
-    const currentIsDefault = JSON.stringify(presets) === JSON.stringify(DEFAULT_PRESETS);
-    if (currentIsDefault) {
-      presets = importPending.presets;
-      savePresetsLS();
-      renderPresets();
+window.handleAuth = async function() {
+  const email    = document.getElementById('authEmail').value.trim();
+  const password = document.getElementById('authPassword').value;
+  const dispName = document.getElementById('authDisplayName').value.trim();
+
+  if (!email || !password) { showAuthError('Vui lòng nhập đầy đủ email và mật khẩu.'); return; }
+  if (authMode === 'register' && !dispName) { showAuthError('Vui lòng nhập tên hiển thị.'); return; }
+
+  setAuthLoading(true);
+  document.getElementById('authError').classList.remove('show');
+
+  try {
+    if (authMode === 'login') {
+      await signInWithEmailAndPassword(auth, email, password);
+    } else {
+      const cred = await createUserWithEmailAndPassword(auth, email, password);
+      await updateProfile(cred.user, { displayName: dispName });
     }
+    // onAuthStateChanged will handle the rest
+  } catch (err) {
+    showAuthError(firebaseErrorToVi(err.code));
+    setAuthLoading(false);
   }
-  saveTasks();
-  render();
-  closeImport();
-  showToast(`✅ Đã nhập ${importPending.newTasks.length} công việc từ backup!`);
-  importPending = null;
+};
+
+window.handleForgotPassword = async function() {
+  const email = document.getElementById('authEmail').value.trim();
+  if (!email) { showAuthError('Nhập email vào ô trên rồi nhấn "Quên mật khẩu?".'); return; }
+  try {
+    await sendPasswordResetEmail(auth, email);
+    document.getElementById('authError').style.cssText = '';
+    const el = document.getElementById('authError');
+    el.style.background = '#F0FDF4'; el.style.borderColor = '#BBF7D0'; el.style.color = 'var(--green)';
+    el.textContent = '✅ Email đặt lại mật khẩu đã được gửi!';
+    el.classList.add('show');
+  } catch (err) {
+    showAuthError(firebaseErrorToVi(err.code));
+  }
+};
+
+window.signOut = async function() {
+  if (!confirm('Bạn có chắc muốn đăng xuất?')) return;
+  if (unsubscribeTasks)   unsubscribeTasks();
+  if (unsubscribePresets) unsubscribePresets();
+  tasks = []; presets = [];
+  await fbSignOut(auth);
+};
+
+// ════════════════════════════════════════════════════
+//  FIRESTORE — REALTIME LISTENERS
+// ════════════════════════════════════════════════════
+function listenTasks(uid) {
+  const colRef = collection(db, 'users', uid, 'tasks');
+  unsubscribeTasks = onSnapshot(colRef, snap => {
+    tasks = snap.docs.map(d => migrateTask({ id: d.id, ...d.data() }));
+    render();
+    setSyncStatus('ok');
+  }, err => { console.error(err); setSyncStatus('error'); });
 }
+
+function listenPresets(uid) {
+  const docRef = doc(db, 'users', uid, 'meta', 'presets');
+  unsubscribePresets = onSnapshot(docRef, snap => {
+    if (snap.exists()) {
+      const data = snap.data().list;
+      presets = Array.isArray(data) && data.length > 0 ? data : DEFAULT_PRESETS;
+    } else {
+      presets = DEFAULT_PRESETS;
+    }
+    renderPresets();
+  });
+}
+
+// ════════════════════════════════════════════════════
+//  SAVE TO FIRESTORE
+// ════════════════════════════════════════════════════
+async function saveTaskToCloud(task) {
+  setSyncStatus('syncing');
+  try {
+    const { id, ...data } = task;
+    await setDoc(doc(db, 'users', currentUser.uid, 'tasks', id), data);
+    setSyncStatus('ok');
+  } catch (e) { console.error(e); setSyncStatus('error'); showToast('⚠️ Lỗi lưu dữ liệu'); }
+}
+
+async function deleteTaskFromCloud(id) {
+  setSyncStatus('syncing');
+  try {
+    await deleteDoc(doc(db, 'users', currentUser.uid, 'tasks', id));
+    setSyncStatus('ok');
+  } catch (e) { console.error(e); setSyncStatus('error'); }
+}
+
+async function savePresetsToCloud() {
+  if (!currentUser) return;
+  try {
+    await setDoc(doc(db, 'users', currentUser.uid, 'meta', 'presets'), { list: presets });
+  } catch (e) { console.error(e); }
+}
+
+// ════════════════════════════════════════════════════
+//  AUTH STATE CHANGE
+// ════════════════════════════════════════════════════
+onAuthStateChanged(auth, user => {
+  if (user) {
+    currentUser = user;
+    document.getElementById('authScreen').style.display = 'none';
+    document.getElementById('headerUsername').textContent = user.displayName || user.email.split('@')[0];
+    document.getElementById('configNotice').style.display = 'none';
+    applyFS();
+    listenTasks(user.uid);
+    listenPresets(user.uid);
+    if (!localStorage.getItem(KEY_BAR)) {
+      setTimeout(() => { if (tasks.length > 0) document.getElementById('backupBar').style.display = 'flex'; }, 2000);
+    }
+  } else {
+    currentUser = null;
+    document.getElementById('authScreen').style.display = 'flex';
+    setAuthLoading(false);
+  }
+});
+
+// ════════════════════════════════════════════════════
+//  FONT SIZE
+// ════════════════════════════════════════════════════
+function applyFS() {
+  document.body.style.fontSize = fontSize + 'px';
+  document.getElementById('fsLabel').textContent = fontSize;
+}
+window.changeFS = function(delta) {
+  fontSize = Math.min(22, Math.max(11, fontSize + delta));
+  applyFS();
+  localStorage.setItem(KEY_FS, fontSize);
+};
+
+// ════════════════════════════════════════════════════
+//  BACKUP BAR
+// ════════════════════════════════════════════════════
+window.dismissBar = function() {
+  document.getElementById('backupBar').style.display = 'none';
+  localStorage.setItem(KEY_BAR, '1');
+};
+
+// ════════════════════════════════════════════════════
+//  FILTER & SORT
+// ════════════════════════════════════════════════════
+window.setFilter = function(btn, cat) {
+  document.querySelectorAll('.pill[data-cat]').forEach(el => el.classList.remove('active'));
+  btn.classList.add('active'); filterCat = cat; render();
+};
+window.setSort = function(mode) {
+  sortMode = mode;
+  document.getElementById('sortDays').classList.toggle('active', mode==='days');
+  document.getElementById('sortName').classList.toggle('active', mode==='name');
+  render();
+};
+
+// ════════════════════════════════════════════════════
+//  TASK MODAL
+// ════════════════════════════════════════════════════
+window.openModal = function(preset) {
+  editId = null;
+  document.getElementById('modalTitle').textContent = '➕ Thêm công việc mới';
+  document.getElementById('btnSave').textContent    = 'Thêm công việc';
+  document.getElementById('fName').value     = preset?.name     || '';
+  document.getElementById('fCat').value      = preset?.cat      || 'personal';
+  document.getElementById('fDate').value     = todayStr();
+  document.getElementById('fInterval').value = preset?.interval || 30;
+  document.getElementById('fNotes').value    = '';
+  updatePreview();
+  document.getElementById('overlay').classList.add('show');
+  setTimeout(() => document.getElementById('fName').focus(), 60);
+};
+window.openPreset = function(i) { openModal(presets[i]); };
+window.openEdit = function(id) {
+  const t = tasks.find(x => x.id === id); if (!t) return;
+  editId = id;
+  document.getElementById('modalTitle').textContent = '✏️ Chỉnh sửa công việc';
+  document.getElementById('btnSave').textContent    = 'Lưu thay đổi';
+  document.getElementById('fName').value     = t.name;
+  document.getElementById('fCat').value      = t.cat;
+  document.getElementById('fDate').value     = t.doneDate;
+  document.getElementById('fInterval').value = t.interval;
+  document.getElementById('fNotes').value    = t.notes || '';
+  updatePreview();
+  document.getElementById('overlay').classList.add('show');
+};
+window.closeModal      = function() { document.getElementById('overlay').classList.remove('show'); };
+window.closeModalIfBg  = function(e) { if (e.target === document.getElementById('overlay')) closeModal(); };
+
+window.updatePreview = function() {
+  const name = document.getElementById('fName').value.trim();
+  const d    = document.getElementById('fDate').value;
+  const n    = document.getElementById('fInterval').value;
+  document.getElementById('btnSave').disabled = !name;
+  const box = document.getElementById('previewBox');
+  if (d && n) {
+    const rem = addDays(d, n);
+    const dl  = daysLeft(rem);
+    document.getElementById('previewDate').textContent = fmt(rem);
+    document.getElementById('previewDays').textContent =
+      dl < 0 ? `(đã qua ${Math.abs(dl)} ngày)` : dl === 0 ? '(hôm nay)' : `(${dl} ngày nữa)`;
+    box.classList.add('show');
+  } else { box.classList.remove('show'); }
+};
+
+window.saveTask = async function() {
+  if (!currentUser) return;
+  const name     = document.getElementById('fName').value.trim(); if (!name) return;
+  const cat      = document.getElementById('fCat').value;
+  const doneDate = document.getElementById('fDate').value;
+  const interval = parseInt(document.getElementById('fInterval').value) || 30;
+  const notes    = document.getElementById('fNotes').value.trim();
+  const reminderDate = addDays(doneDate, interval);
+
+  const task = editId
+    ? { ...tasks.find(t => t.id === editId), name, cat, doneDate, interval, notes, reminderDate, _v: SCHEMA_VERSION }
+    : { id: crypto.randomUUID(), name, cat, doneDate, interval, notes, reminderDate, _v: SCHEMA_VERSION };
+
+  closeModal();
+  showToast(editId ? '✅ Đã cập nhật công việc' : '✅ Đã thêm công việc mới');
+  await saveTaskToCloud(task);
+};
+
+window.markDone = async function(id) {
+  const task = tasks.find(t => t.id === id); if (!task) return;
+  const today = todayStr();
+  const updated = { ...task, doneDate: today, reminderDate: addDays(today, task.interval) };
+  showToast('✓ Đã hoàn thành — lịch nhắc đã cập nhật!');
+  await saveTaskToCloud(updated);
+};
+
+window.deleteTask = async function(id) {
+  if (!confirm('Bạn có chắc muốn xoá công việc này?')) return;
+  showToast('🗑 Đã xoá công việc');
+  await deleteTaskFromCloud(id);
+};
 
 // ════════════════════════════════════════════════════
 //  RENDER TASKS
@@ -963,11 +1152,6 @@ function render() {
   const urgent = overdue + soon;
   document.getElementById('urgentCount').textContent = urgent;
   document.getElementById('urgentBadge').classList.toggle('show', urgent > 0);
-
-  // Hiện backup bar nếu có data và chưa dismiss
-  if (tasks.length > 0 && !localStorage.getItem(KEY_BAR)) {
-    document.getElementById('backupBar').style.display = 'flex';
-  }
 }
 
 // ════════════════════════════════════════════════════
@@ -976,118 +1160,22 @@ function render() {
 function renderPresets() {
   document.getElementById('presetGrid').innerHTML = presets.map((p,i) => {
     const c = CATEGORIES[p.cat] || CATEGORIES.other;
-    return `
-      <button class="preset-chip" onclick="openPreset(${i})">
-        <div class="pname">${c.icon} ${p.name}</div>
-        <div class="pinfo">Mỗi ${p.interval} ngày</div>
-      </button>`;
+    return `<button class="preset-chip" onclick="openPreset(${i})">
+      <div class="pname">${c.icon} ${p.name}</div>
+      <div class="pinfo">Mỗi ${p.interval} ngày</div>
+    </button>`;
   }).join('');
-}
-
-// ════════════════════════════════════════════════════
-//  FILTER & SORT
-// ════════════════════════════════════════════════════
-function setFilter(btn, cat) {
-  document.querySelectorAll('.pill[data-cat]').forEach(el => el.classList.remove('active'));
-  btn.classList.add('active'); filterCat = cat; render();
-}
-function setSort(mode) {
-  sortMode = mode;
-  document.getElementById('sortDays').classList.toggle('active', mode==='days');
-  document.getElementById('sortName').classList.toggle('active', mode==='name');
-  render();
-}
-
-// ════════════════════════════════════════════════════
-//  TASK MODAL
-// ════════════════════════════════════════════════════
-function openModal(preset) {
-  editId = null;
-  document.getElementById('modalTitle').textContent = '➕ Thêm công việc mới';
-  document.getElementById('btnSave').textContent    = 'Thêm công việc';
-  document.getElementById('fName').value     = preset?.name     || '';
-  document.getElementById('fCat').value      = preset?.cat      || 'personal';
-  document.getElementById('fDate').value     = todayStr();
-  document.getElementById('fInterval').value = preset?.interval || 30;
-  document.getElementById('fNotes').value    = '';
-  updatePreview();
-  document.getElementById('overlay').classList.add('show');
-  setTimeout(() => document.getElementById('fName').focus(), 60);
-}
-function openPreset(i) { openModal(presets[i]); }
-function openEdit(id) {
-  const t = tasks.find(x => x.id === id); if (!t) return;
-  editId = id;
-  document.getElementById('modalTitle').textContent = '✏️ Chỉnh sửa công việc';
-  document.getElementById('btnSave').textContent    = 'Lưu thay đổi';
-  document.getElementById('fName').value     = t.name;
-  document.getElementById('fCat').value      = t.cat;
-  document.getElementById('fDate').value     = t.doneDate;
-  document.getElementById('fInterval').value = t.interval;
-  document.getElementById('fNotes').value    = t.notes || '';
-  updatePreview();
-  document.getElementById('overlay').classList.add('show');
-}
-function closeModal()      { document.getElementById('overlay').classList.remove('show'); }
-function closeModalIfBg(e) { if (e.target === document.getElementById('overlay')) closeModal(); }
-
-function updatePreview() {
-  const name = document.getElementById('fName').value.trim();
-  const d    = document.getElementById('fDate').value;
-  const n    = document.getElementById('fInterval').value;
-  document.getElementById('btnSave').disabled = !name;
-  const box = document.getElementById('previewBox');
-  if (d && n) {
-    const rem = addDays(d, n);
-    const dl  = daysLeft(rem);
-    document.getElementById('previewDate').textContent = fmt(rem);
-    document.getElementById('previewDays').textContent =
-      dl < 0 ? `(đã qua ${Math.abs(dl)} ngày)` : dl === 0 ? '(hôm nay)' : `(${dl} ngày nữa)`;
-    box.classList.add('show');
-  } else { box.classList.remove('show'); }
-}
-
-function saveTask() {
-  const name     = document.getElementById('fName').value.trim(); if (!name) return;
-  const cat      = document.getElementById('fCat').value;
-  const doneDate = document.getElementById('fDate').value;
-  const interval = parseInt(document.getElementById('fInterval').value) || 30;
-  const notes    = document.getElementById('fNotes').value.trim();
-  const reminderDate = addDays(doneDate, interval);
-  if (editId) {
-    const idx = tasks.findIndex(t => t.id === editId);
-    if (idx > -1) tasks[idx] = { ...tasks[idx], name, cat, doneDate, interval, notes, reminderDate, _v: SCHEMA_VERSION };
-    showToast('✅ Đã cập nhật công việc');
-  } else {
-    tasks.push({ id: crypto.randomUUID(), name, cat, doneDate, interval, notes, reminderDate, _v: SCHEMA_VERSION });
-    showToast('✅ Đã thêm công việc mới');
-  }
-  saveTasks(); render(); closeModal();
-}
-function markDone(id) {
-  const idx = tasks.findIndex(t => t.id === id); if (idx < 0) return;
-  const today = todayStr();
-  tasks[idx].doneDate = today;
-  tasks[idx].reminderDate = addDays(today, tasks[idx].interval);
-  saveTasks(); render();
-  showToast('✓ Đã hoàn thành — lịch nhắc đã cập nhật!');
-}
-function deleteTask(id) {
-  if (!confirm('Bạn có chắc muốn xoá công việc này?')) return;
-  tasks = tasks.filter(t => t.id !== id);
-  saveTasks(); render();
-  showToast('🗑 Đã xoá công việc');
 }
 
 // ════════════════════════════════════════════════════
 //  PRESET EDITOR
 // ════════════════════════════════════════════════════
-function openPresetEditor() {
+window.openPresetEditor = function() {
   renderPresetEditorList();
   document.getElementById('overlayPresets').classList.add('show');
-}
-function closePresetEditor() { document.getElementById('overlayPresets').classList.remove('show'); }
-function closePEIfBg(e)      { if (e.target === document.getElementById('overlayPresets')) closePresetEditor(); }
+};
+window.closePresetEditor = function() { document.getElementById('overlayPresets').classList.remove('show'); };
+window.closePEIfBg       = function(e) { if (e.target === document.getElementById('overlayPresets')) closePresetEditor(); };
 
 function renderPresetEditorList() {
   document.getElementById('presetEditorList').innerHTML = presets.map((p, i) => `
@@ -1099,13 +1187,13 @@ function renderPresetEditorList() {
     </div>`
   ).join('');
 }
-function addPresetRow() {
+window.addPresetRow = function() {
   presets.push({ name: '', cat: 'personal', interval: 30 });
   renderPresetEditorList();
   document.getElementById(`pname-${presets.length-1}`)?.focus();
-}
-function removePresetRow(i) { presets.splice(i, 1); renderPresetEditorList(); }
-function savePresets() {
+};
+window.removePresetRow = function(i) { presets.splice(i, 1); renderPresetEditorList(); };
+window.savePresets = async function() {
   const newPresets = [];
   let i = 0;
   while (document.getElementById(`prow-${i}`)) {
@@ -1116,20 +1204,107 @@ function savePresets() {
     i++;
   }
   presets = newPresets;
-  savePresetsLS(); renderPresets(); closePresetEditor();
+  await savePresetsToCloud();
+  renderPresets();
+  closePresetEditor();
   showToast('✅ Đã lưu danh sách mẫu việc');
+};
+
+// ════════════════════════════════════════════════════
+//  EXPORT / IMPORT
+// ════════════════════════════════════════════════════
+window.exportData = function() {
+  const payload = {
+    app: 'nhac-viec', version: SCHEMA_VERSION,
+    exportedAt: new Date().toISOString(), tasks, presets,
+  };
+  const blob = new Blob([JSON.stringify(payload, null, 2)], { type: 'application/json' });
+  const url  = URL.createObjectURL(blob);
+  const a    = document.createElement('a');
+  const date = new Date().toLocaleDateString('vi-VN').replace(/\//g,'-');
+  a.href = url; a.download = `nhac-viec-backup-${date}.json`; a.click();
+  URL.revokeObjectURL(url);
+  showToast('⬇️ Đã xuất file backup thành công!');
+};
+
+window.openImport = function() {
+  importPending = null;
+  document.getElementById('importInfo').classList.remove('show');
+  document.getElementById('importInfo').textContent = '';
+  document.getElementById('btnImport').disabled = true;
+  document.getElementById('fileInput').value = '';
+  document.getElementById('overlayImport').classList.add('show');
+};
+window.closeImport      = function() { document.getElementById('overlayImport').classList.remove('show'); };
+window.closeImportIfBg  = function(e) { if (e.target === document.getElementById('overlayImport')) closeImport(); };
+window.onDragOver       = function(e) { e.preventDefault(); document.getElementById('importDrop').classList.add('dragover'); };
+window.onDragLeave      = function() { document.getElementById('importDrop').classList.remove('dragover'); };
+window.onDrop = function(e) {
+  e.preventDefault(); document.getElementById('importDrop').classList.remove('dragover');
+  const file = e.dataTransfer.files[0]; if (file) readImportFile(file);
+};
+window.onFileSelected = function(e) { const file = e.target.files[0]; if (file) readImportFile(file); };
+
+function readImportFile(file) {
+  const reader = new FileReader();
+  reader.onload = (e) => {
+    try {
+      const data = JSON.parse(e.target.result);
+      if (!data.tasks || !Array.isArray(data.tasks)) throw new Error('File không hợp lệ');
+      const migrated   = data.tasks.map(migrateTask);
+      const existingIds = new Set(tasks.map(t => t.id));
+      const newTasks   = migrated.filter(t => !existingIds.has(t.id));
+      importPending    = { tasks: migrated, newTasks, presets: data.presets || null };
+      const info = document.getElementById('importInfo');
+      info.innerHTML = `✅ File hợp lệ — <b>${migrated.length}</b> công việc trong file, <b>${newTasks.length}</b> việc mới sẽ được thêm${data.exportedAt ? ` (backup ngày ${new Date(data.exportedAt).toLocaleDateString('vi-VN')})` : ''}.`;
+      info.classList.add('show');
+      document.getElementById('btnImport').disabled = newTasks.length === 0;
+      if (newTasks.length === 0) info.innerHTML = 'ℹ️ Tất cả công việc trong file đã có trong danh sách.';
+    } catch {
+      const info = document.getElementById('importInfo');
+      info.innerHTML = '❌ File không đúng định dạng. Vui lòng chọn file backup từ Nhắc Việc.';
+      info.classList.add('show');
+      info.style.background = '#FEF2F2'; info.style.borderColor = '#FECACA'; info.style.color = 'var(--red)';
+    }
+  };
+  reader.readAsText(file);
 }
+
+window.doImport = async function() {
+  if (!importPending || importPending.newTasks.length === 0 || !currentUser) return;
+  // Batch write to Firestore
+  setSyncStatus('syncing');
+  try {
+    const batch = writeBatch(db);
+    for (const task of importPending.newTasks) {
+      const { id, ...data } = task;
+      batch.set(doc(db, 'users', currentUser.uid, 'tasks', id), data);
+    }
+    await batch.commit();
+    if (importPending.presets && Array.isArray(importPending.presets)) {
+      const currentIsDefault = JSON.stringify(presets) === JSON.stringify(DEFAULT_PRESETS);
+      if (currentIsDefault) {
+        presets = importPending.presets;
+        await savePresetsToCloud();
+      }
+    }
+    closeImport();
+    setSyncStatus('ok');
+    showToast(`✅ Đã nhập ${importPending.newTasks.length} công việc!`);
+    importPending = null;
+  } catch (e) { console.error(e); setSyncStatus('error'); showToast('⚠️ Lỗi khi nhập dữ liệu'); }
+};
 
 // ════════════════════════════════════════════════════
 //  TOAST
 // ════════════════════════════════════════════════════
 let toastTimer;
-function showToast(msg) {
+window.showToast = function(msg) {
   const el = document.getElementById('toast');
   el.textContent = msg; el.classList.add('show');
   clearTimeout(toastTimer);
   toastTimer = setTimeout(() => el.classList.remove('show'), 2800);
-}
+};
 
 // ════════════════════════════════════════════════════
 //  KEYBOARD
@@ -1137,23 +1312,17 @@ function showToast(msg) {
 document.addEventListener('keydown', e => {
   if (e.key === 'Escape') { closeModal(); closePresetEditor(); closeImport(); }
   if ((e.ctrlKey || e.metaKey) && e.key === 'Enter') saveTask();
-  if (e.key === 'Enter' && document.getElementById('welcomeScreen').style.display !== 'none') startApp();
 });
 
 // ════════════════════════════════════════════════════
 //  INIT
 // ════════════════════════════════════════════════════
-load();
 applyFS();
-renderPresets();
-render();
 
-// Show welcome screen if no username saved yet
-if (!username) {
-  document.getElementById('welcomeScreen').style.display = 'flex';
-} else {
-  document.getElementById('welcomeScreen').style.display = 'none';
-  document.getElementById('headerUsername').textContent = username;
+// Check if Firebase is properly configured
+const isConfigured = FIREBASE_CONFIG.apiKey !== 'THAY_API_KEY_CUA_BAN';
+if (!isConfigured) {
+  document.getElementById('configNotice').style.display = 'block';
 }
 </script>
 </body>
